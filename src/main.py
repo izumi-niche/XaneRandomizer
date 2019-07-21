@@ -649,21 +649,21 @@ def SelectFile():
 	RomLocation.set(filedialog.askopenfilename(title = "Select FE3 rom...",filetypes = (("SNES .smc files","*.smc"), ("SNES .fig files","*.fig"),("All Files","*.*"))))
 def RandomizingProcess():
 	global fe3rom
-	##############################
-	### File Locations routine ###
-	##############################
+	######################
+	### File Locations ###
+	######################
 	FileLocation = RomLocation.get()
 	if FileLocation == '':
 		print('Please, select a FE3 rom first!')
 		return
-	SaveLocation = filedialog.asksaveasfilename(title = "Choose where to save the randomize rom...",filetypes = (("SNES .smc files","*.smc"),("All Files","*.*")))
+	SaveLocation = filedialog.asksaveasfilename(title = "Choose where to save the randomize rom...",filetypes = (("SNES .smc files","*.smc")))
 	if SaveLocation == '':
 		print('Please, select a place to save the FE3 randomized rom! Aborting randomization process...')
 		return
 	if not '.smc' in SaveLocation:
 		SaveLocation += '.smc'
 	if LogVar.get() == 1:
-		LogLocation = filedialog.asksaveasfilename(title = "Choose where to save the log file...",filetypes = (("HTML File","*.html"),("All Files","*.*")))
+		LogLocation = filedialog.asksaveasfilename(title = "Choose where to save the log file...",filetypes = (("HTML File","*.html")))
 		if LogLocation == '':
 			print('Please, select a place to save the changelog file! Aborting randomization process...')
 			return
@@ -677,8 +677,7 @@ def RandomizingProcess():
 	### Randomization Functions ###
 	###############################
 	IncreaseEnemyStats(1, 1, 3, 30)
-	if PlayerClassVar.get() == 1:
-		RandomizePlayableUnits()
+	RandomizePlayableUnits() if PlayerClassVar.get() == 1 else False
 	###################
 	### Log Process ###
 	###################
