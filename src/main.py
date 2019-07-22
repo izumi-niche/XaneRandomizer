@@ -640,18 +640,55 @@ def RandomizeEnemyClasses(unit):
 
 
 root = Tk()
-# Variables
-RomLocation = StringVar()
-LogVar = IntVar()
+
+
+
+#######################################
+############## GUI Stuff ##############
+#######################################
+
+###############
+### Playable
+###############
+LabelPlayable = LabelFrame(root, text="Playable Options")
+LabelPlayable.grid(row = 1, column = 0, stick=NW)
+
 PlayerClassVar = IntVar()
-# Functions
+checkmarkRandomizeClassesPlayer = Checkbutton(LabelPlayable, text = 'Randomize classes', variable = PlayerClassVar)
+checkmarkRandomizeClassesPlayer.grid(row = 0, column = 0, stick=W)
+
+PlayerBasesVar = IntVar()
+checkmarkRandomizeBasesPlayer = Checkbutton(LabelPlayable, text = 'Randomize bases', variable = PlayerBasesVar)
+checkmarkRandomizeBasesPlayer.grid(row = 1, column = 0, stick=W)
+
+textPlayerBaseRange = Label(LabelPlayable, text = 'Base Range:')
+textPlayerBaseRange.grid(row = 2, column = 0, stick=W)
+
+PlayerBasesRangeVar = IntVar()
+PlayerBasesRangeVar.set(3)
+entryBasesRange = Entry(LabelPlayable, width=5, textvariable = PlayerBasesRangeVar)
+entryBasesRange.grid(row = 2, column = 0, stick=E)
+
+PlayerGrowthsVar = IntVar()
+checkmarkRandomizeGrowthsPlayer = Checkbutton(LabelPlayable, text = 'Randomize growths', variable = PlayerGrowthsVar)
+checkmarkRandomizeGrowthsPlayer.grid(row = 3, column = 0, stick = W)
+
+PlayerGrowthsModeVar = IntVar()
+PlayerGrowthsModeVar.set(1)
+radiobuttonGrowthsFullMode = Radiobutton(LabelPlayable, text = 'Full Mode', variable = PlayerGrowthsModeVar, value = 1)
+radiobuttonGrowthsRangeMode = Radiobutton(LabelPlayable, text = 'Range Mode', variable = PlayerGrowthsModeVar, value = 2)
+radiobuttonGrowthsFullMode.grid(row = 4, column = 0, stick = W)
+radiobuttonGrowthsRangeMode.grid(row = 5, column = 0, stick = W)
+##################################################################
+########################### Functions ############################
+##################################################################
 def SelectFile():
 	RomLocation.set(filedialog.askopenfilename(title = "Select FE3 rom...",filetypes = (("SNES .smc files","*.smc"), ("SNES .fig files","*.fig"),("All Files","*.*"))))
 def RandomizingProcess():
 	global fe3rom
-	######################
-	### File Locations ###
-	######################
+######################
+### File Locations ###
+######################
 	FileLocation = RomLocation.get()
 	if FileLocation == '':
 		print('Please, select a FE3 rom first!')
@@ -673,228 +710,44 @@ def RandomizingProcess():
 			changelog = open(LogLocation, 'w')
 	shutil.copyfile(FileLocation, SaveLocation)
 	fe3rom = open(SaveLocation, 'rb+')
-	###############################
-	### Randomization Functions ###
-	###############################
+###############################
+### Randomization Functions ###
+###############################
 	IncreaseEnemyStats(1, 1, 3, 30)
 	RandomizePlayableUnits() if PlayerClassVar.get() == 1 else False
-	###################
-	### Log Process ###
-	###################
+###################
+### Log Process ###
+###################
 	if LogVar.get() == 1:
 		CreateLogFile(LogLocation)
 
 		CreateSupportLog(LogLocation, SaveLocation)
 
 		EndLogFile(LogLocation)
-#######################################
-############## GUI Stuff ##############
-#######################################
-LabelPlayable = LabelFrame(root, text="Playable Options", width = 220, height = 290)
-LabelEnemy = LabelFrame(root, text="Enemy Options")
-LabelBoss = LabelFrame(root, text="Bosses Options", width = 284, height = 336)
-LabelCustom = LabelFrame(root, text="Custom Options", width = 485, height = 160)
-LabelExtras = LabelFrame(root, text="Extra Options", height = 160, width = 284)
-LabelUnused = LabelFrame(root, text="Unused Content")
-LabelWeapons = LabelFrame(root, text="Weapons and classes")
 
-buttonOpenFile = Button(root, text='Search ROM...', command = SelectFile)
-entryOpenFile = Entry(root, width = 100, textvariable = RomLocation)
+
+
+###########################
+########## Other ##########
+###########################
+# They need to be down here since the functions are after the gui stuff
+RomLocation = StringVar()
+LogVar = IntVar()
+
+buttonOpenFile = Button(root, text='Select FE3 rom...', command = SelectFile)
+buttonOpenFile.grid(row = 0, column = 1, stick=W)
+
 checkmarkCreateLog = Checkbutton(root, text = 'Create Log', variable = LogVar)
+checkmarkCreateLog.grid(row = 0, column = 0, stick=E)
+
 labelReadme = Label(root, text = 'For more information on the options or a fix to possible user errors, please read the Readme.')
-buttonRandomize = Button(root, text='Randomize!', width = 108, command = RandomizingProcess)
+labelReadme.grid(row = 2, columnspan = 3, column = 0)
 
-# Playable
-checkmarkRandomizeClassesPlayer = Checkbutton(LabelPlayable, text = 'Randomize classes', variable = PlayerClassVar)
-
-checkmarkRandomizeBasesPlayer = Checkbutton(LabelPlayable, text = 'Randomize bases')
-labelBasesRange = Label(LabelPlayable, text = '     Bases Range:')
-entryBasesRange = Entry(LabelPlayable, width=5)
-
-checkmarkRandomizeGrowthsPlayer = Checkbutton(LabelPlayable, text = 'Randomize growths')
-radiobuttonGrowthsFullMode = Radiobutton(LabelPlayable, text = 'Full Mode')
-radiobuttonGrowthsRangeMode = Radiobutton(LabelPlayable, text = 'Range Mode')
-entryGrowthsRange = Entry(LabelPlayable, width=5)
-
-checkmarkAllowEnemyWeapons = Checkbutton(LabelPlayable, text = 'Allow enemy only weapons')
-
-# Enemy
-checkmarkRandomizeClassesEnemy = Checkbutton(LabelEnemy, text = 'Randomize classes')
-
-checkmarkIncreaseBaseEnemy = Checkbutton(LabelEnemy, text = 'Increase bases')
-labelIncreaseBaseEnemy = Label(LabelEnemy, text = '             Increase by:')
-entryIncreaseBaseEnemy = Entry(LabelEnemy, width = 5)
-
-checkmarkIncreaseGrowthEnemy = Checkbutton(LabelEnemy, text = 'Increase growths')
-labelIncreaseGrowthEnemy = Label(LabelEnemy, text = '             Increase by:')
-entryIncreaseGrowthEnemy = Entry(LabelEnemy, width = 5)
-
-checkmarkEnemyUniqueClasses = Checkbutton(LabelEnemy, text = 'Enemies can use unique classes')
-checkmarkEnemyItemDrop = Checkbutton(LabelEnemy, text = 'Have a chance to have droppable items')
-
-checkmarkEnemyMininumWeaponTier = Checkbutton(LabelEnemy, text = 'Minimum Weapon Tier')
-radiobuttonEnemyTierIron = Radiobutton(LabelEnemy, text = 'Iron Tier')
-radiobuttonEnemyTierSteel = Radiobutton(LabelEnemy, text = 'Steel Tier')
-radiobuttonEnemyTierSilver = Radiobutton(LabelEnemy, text = 'Silver Tier')
-radiobuttonEnemyTierLegendary = Radiobutton(LabelEnemy, text = 'Legendary Tier')
-
-checkmarkEnemyUpgradeWeapon = Checkbutton(LabelEnemy, text = 'Weapons have a chance to upgrade one tier')
-
-# Boss
-checkmarkRandomizeClassesBoss = Checkbutton(LabelBoss, text = 'Randomize classes')
-
-checkmarkIncreaseBaseBoss = Checkbutton(LabelBoss, text = 'Increase bases')
-labelIncreaseBaseBoss = Label(LabelBoss, text = '             Increase by:')
-entryIncreaseBaseBoss = Entry(LabelBoss, width = 5)
-
-checkmarkIncreaseGrowthBoss = Checkbutton(LabelBoss, text = 'Increase growths')
-labelIncreaseGrowthBoss = Label(LabelBoss, text = '             Increase by:')
-entryIncreaseGrowthBoss = Entry(LabelBoss, width = 5)
-
-checkmarkBossUniqueClasses = Checkbutton(LabelBoss, text = 'Enemies can use unique classes')
-checkmarkBossItemDrop = Checkbutton(LabelBoss, text = 'Have a chance to have droppable items')
-
-checkmarkBossMininumWeaponTier = Checkbutton(LabelBoss, text = 'Minimum Weapon Tier')
-radiobuttonBossTierIron = Radiobutton(LabelBoss, text = 'Iron Tier')
-radiobuttonBossTierSteel = Radiobutton(LabelBoss, text = 'Steel Tier')
-radiobuttonBossTierSilver = Radiobutton(LabelBoss, text = 'Silver Tier')
-radiobuttonBossTierLegendary = Radiobutton(LabelBoss, text = 'Legendary Tier')
-
-checkmarkBossUpgradeWeapon = Checkbutton(LabelBoss, text = 'Weapons have a chance to upgrade one tier')
-
-# Custom
-checkmarkCreateMiniboss = Checkbutton(LabelCustom, text = 'Create minibosses')
-
-LabelFirstChapter = Label(LabelCustom, text = 'Chapter they first appear:')
-entryFirstChapter = Entry(LabelCustom, width = 5)
-
-LabelMinimumPerChapter = Label(LabelCustom, text = 'Minimum per chapter:')
-entryMinimumPerChater = Entry(LabelCustom, width = 5)
-
-LabelMaximumPerChapter = Label(LabelCustom, text = 'Maximum per chapter:')
-entryMaximumPerChapter = Entry(LabelCustom, width = 5)
-
-checkmarkIncreaseMiniBossChance = Checkbutton(LabelCustom, text = 'Increase chance to have \n more has the game progresses')
-
-checkmarkMinimumWeaponTier = Checkbutton(LabelCustom, text = 'Minimum weapon tier')
-radiobuttonMiniBossTierIron = Radiobutton(LabelCustom, text = 'Iron Tier')
-radiobuttonMiniBossTierSteel = Radiobutton(LabelCustom, text = 'Steel Tier')
-radiobuttonMiniBossTierSilver = Radiobutton(LabelCustom, text = 'Silver Tier')
-radiobuttonMiniBossTierLegendary = Radiobutton(LabelCustom, text = 'Legendary Tier')
-
-# Extras
-checkmarkRandomizeExtras = Checkbutton(LabelExtras, text = 'Randomize Astral Shards')
-
-checkmarkDoNotCopy = Checkbutton(LabelExtras, text = 'Do not copy units')
-checkmarkZeroGrowths = Checkbutton(LabelExtras, text = '0% growths')
-checkmarkZeroBases = Checkbutton(LabelExtras, text = '0 bases')
-
-# Unused
-checkmarkEnemyUnused = Checkbutton(LabelUnused, text = 'Allow enemies use unused classes')
-
-# Weapon
-checkmarkRandomizeWeapons = Checkbutton(LabelWeapons, text = 'Randomize weapon stats')
+buttonRandomize = Button(root, text='Randomize!', width = 50, command = RandomizingProcess)
+buttonRandomize.grid(row = 3, columnspan = 3, column = 0)
 
 
-## PLACE STUFF
-buttonOpenFile.grid(row = 0, column = 0, stick=E, columnspan = 3)
-entryOpenFile.grid(row = 0, column = 0, columnspan = 3)
-checkmarkCreateLog.grid(row = 0, column = 0, columnspan = 3, stick=W)
 
-LabelPlayable.grid(row = 1, column = 0, stick=NW)
-LabelPlayable.grid_propagate(0)
-LabelBoss.grid(row = 1, column = 2, stick=NW, rowspan = 2)
-LabelBoss.grid_propagate(0)
-LabelEnemy.grid(row = 1, column = 1, stick=NW, rowspan = 2)
-LabelUnused.grid(row = 2, column = 0, stick=NW)
-LabelCustom.grid(row = 3, column = 0, stick=NW, columnspan = 2)
-LabelCustom.grid_propagate(0)
-#LabelWeapons.grid(row = 0, column = 2, stick=W)
-LabelExtras.grid(row = 3, column = 2, stick=NW)
-LabelExtras.grid_propagate(0)
-labelReadme.grid(row = 5, column = 0, columnspan = 3)
-buttonRandomize.grid(row = 6, column = 0, columnspan = 3)
-
-#Playable
-checkmarkRandomizeClassesPlayer.grid(row = 0, column = 0, stick=W)
-checkmarkRandomizeBasesPlayer.grid(row = 1, column = 0, stick=W)
-labelBasesRange.grid(row = 2, column = 0)
-entryBasesRange.grid(row = 2, column = 0, stick=E)
-checkmarkRandomizeGrowthsPlayer.grid(row = 3, column = 0, stick=W)
-radiobuttonGrowthsFullMode.grid(row = 4, column = 0, stick=W)
-radiobuttonGrowthsRangeMode.grid(row = 5, column = 0, stick=W)
-entryGrowthsRange.grid(row = 5, column = 0, stick=E)
-checkmarkAllowEnemyWeapons.grid(row = 6, column = 0, stick=W)
-
-#Boss
-checkmarkRandomizeClassesBoss.grid(row = 0, column = 0, stick=W)
-
-checkmarkIncreaseBaseBoss.grid(row = 1, column = 0, stick=W)
-labelIncreaseBaseBoss.grid(row = 2, column = 0, stick=W)
-entryIncreaseBaseBoss.grid(row = 2, column = 0)
-
-checkmarkIncreaseGrowthBoss.grid(row = 3, column = 0, stick=W)
-labelIncreaseGrowthBoss.grid(row = 4, column = 0, stick=W)
-entryIncreaseGrowthBoss.grid(row = 4, column = 0)
-
-checkmarkBossUniqueClasses.grid(row = 5, column = 0, stick=W)
-checkmarkBossItemDrop.grid(row = 6, column = 0, stick=W)
-
-checkmarkBossMininumWeaponTier.grid(row = 7, column = 0, stick=W)
-radiobuttonBossTierIron.grid(row = 8, column = 0, stick=W)
-radiobuttonBossTierSteel.grid(row = 9, column = 0, stick=W)
-radiobuttonBossTierSilver.grid(row = 10, column = 0, stick=W)
-radiobuttonBossTierLegendary.grid(row = 11, column = 0, stick=W)
-
-checkmarkBossUpgradeWeapon.grid(row = 12, column = 0, stick=W)
-#Enemy
-checkmarkRandomizeClassesEnemy.grid(row = 0, column = 0, stick=W)
-
-checkmarkIncreaseBaseEnemy.grid(row = 1, column = 0, stick=W)
-labelIncreaseBaseEnemy.grid(row = 2, column = 0, stick=W)
-entryIncreaseBaseEnemy.grid(row = 2, column = 0)
-
-checkmarkIncreaseGrowthEnemy.grid(row = 3, column = 0, stick=W)
-labelIncreaseGrowthEnemy.grid(row = 4, column = 0, stick=W)
-entryIncreaseGrowthEnemy.grid(row = 4, column = 0)
-
-checkmarkEnemyUniqueClasses.grid(row = 5, column = 0, stick=W)
-checkmarkEnemyItemDrop.grid(row = 6, column = 0, stick=W)
-
-checkmarkEnemyMininumWeaponTier.grid(row = 7, column = 0, stick=W)
-radiobuttonEnemyTierIron.grid(row = 8, column = 0, stick=W)
-radiobuttonEnemyTierSteel.grid(row = 9, column = 0, stick=W)
-radiobuttonEnemyTierSilver.grid(row = 10, column = 0, stick=W)
-radiobuttonEnemyTierLegendary.grid(row = 11, column = 0, stick=W)
-
-checkmarkEnemyUpgradeWeapon.grid(row = 12, column = 0, stick=W)
-
-#Custom
-checkmarkCreateMiniboss.grid(row = 0, column = 0, stick=W)
-LabelFirstChapter.grid(row = 1, column = 0, stick=W)
-entryFirstChapter.grid(row = 1, column = 0, stick=E)
-LabelMinimumPerChapter.grid(row = 2, column = 0, stick=W)
-entryMinimumPerChater.grid(row = 2, column = 0, stick=E)
-LabelMaximumPerChapter.grid(row = 3, column = 0, stick=W)
-entryMaximumPerChapter.grid(row = 3, column = 0, stick=E)
-checkmarkIncreaseMiniBossChance.grid(row = 4, column = 0, stick=W, rowspan=2)
-
-checkmarkMinimumWeaponTier.grid(row = 0, column =  1, stick=W)
-radiobuttonMiniBossTierIron.grid(row = 1, column = 1, stick=W)
-radiobuttonMiniBossTierSteel.grid(row = 2, column = 1, stick=W)
-radiobuttonMiniBossTierSilver.grid(row = 3, column = 1, stick=W)
-radiobuttonMiniBossTierLegendary.grid(row = 4, column = 1, stick=W)
-#Extras
-checkmarkRandomizeExtras.grid(row = 0, column = 0, stick=W)
-
-checkmarkDoNotCopy.grid(row = 0, column = 1, stick=W)
-checkmarkZeroBases.grid(row = 1, column = 0, stick=W)
-checkmarkZeroGrowths.grid(row = 1, column = 1, stick=W)
-
-#Unused
-checkmarkEnemyUnused.grid(row = 0, column = 0)
-
-checkmarkRandomizeWeapons.grid(row = 0, column = 0)
 
 root.title('Xane Randomizer: A FE3 Randomizer')
 root.iconbitmap('xane.ico')
