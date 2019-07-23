@@ -14,6 +14,7 @@ from lists.enemies import *
 from lists.itempool import *
 from lists.playable import *
 from lists.weaponpool import *
+from lists.replacedata import *
 
 from basicfunctions import *
 from logfunctions import *
@@ -377,7 +378,44 @@ def RandomizePlayableUnits():
 		RandomizePlayableClasses(unit)
 		GiveWeapons(unit,'player')
 
+def CopyUnitItems(unit):
+	Thingy = {}
+	for x in [1, 8, 9, 10, 11, 12, 13]:
+		fe3rom.seek(unit + x)
+		HexRead = fe3rom.read(1)
+		Thingy[x] = HexRead
+	print(Thingy)
+	return Thingy
 
+def PlayableCopyUnits():
+	UnitList = SearchForUnits()
+	PlayableCharacters = GetCharacter(PlayableUnits)
+	DataCollected = {}
+	SpecialCopy = {}
+	for unit in ReplaceData:
+		SpecialCopy[CharacterDataList[ReplaceData[unit][1]]] = CharacterDataList[ReplaceData[unit][2]]
+		SpecialCopy[CharacterDataList[ReplaceData[unit][2]]] = CharacterDataList[ReplaceData[unit][1]]
+	for unit in UnitList:
+		y = UnitList[unit]['character']
+		if y in DataCollected:
+			for x in DataCollected[y]:
+				fe3rom.seek(unit + x)
+				fe3rom.write(DataCollected[y][x])
+		elif y in SpecialCopy:
+			UnitData = CopyUnitItems(unit)
+			DataCollected[y] = UnitData
+			DataCollected[SpecialCopy[y]] = UnitData
+		elif y in PlayableCharacters:
+			UnitData = CopyUnitItems(unit)
+			DataCollected[y] = UnitData
+
+def PlayableCopyBases():
+	for unit in ReplaceData:
+		for x in range(8):
+			fe3rom.seek(CharacterDec + UnitDataCalc(ReplaceData[1]) + x)
+			HexRead = fe3rom.read(1)
+			fe3rom.seek(CharacterDec + UnitDataCalc(ReplaceData[2]) + x)
+			fe3rom.write(HexRead)
 ############################
 ### Give weapons routine ###
 ############################
@@ -679,6 +717,13 @@ radiobuttonGrowthsFullMode = Radiobutton(LabelPlayable, text = 'Full Mode', vari
 radiobuttonGrowthsRangeMode = Radiobutton(LabelPlayable, text = 'Range Mode', variable = PlayerGrowthsModeVar, value = 2)
 radiobuttonGrowthsFullMode.grid(row = 4, column = 0, stick = W)
 radiobuttonGrowthsRangeMode.grid(row = 5, column = 0, stick = W)
+
+PlayerGrowthsRangeVar = IntVar()
+PlayerGrowthsRangeVar.set(30)
+textPlayerGrowthRange = Label(LabelPlayable, text = 'Growths Range:')
+textPlayerGrowthRange.grid(row = 6, column = 0, stick = W)
+PlayerGrowthsRange = Entry(LabelPlayable, width = 5, textvariable = PlayerGrowthsRangeVar)
+PlayerGrowthsRange.grid(row = 6, column = 0, stick = E)
 ##################################################################
 ########################### Functions ############################
 ##################################################################
@@ -693,14 +738,14 @@ def RandomizingProcess():
 	if FileLocation == '':
 		print('Please, select a FE3 rom first!')
 		return
-	SaveLocation = filedialog.asksaveasfilename(title = "Choose where to save the randomize rom...",filetypes = (("SNES .smc files","*.smc")))
+	SaveLocation = filedialog.asksaveasfilename(title = "Choose where to save the randomize rom...",filetypes = [("SNES .smc files","*.smc")])
 	if SaveLocation == '':
 		print('Please, select a place to save the FE3 randomized rom! Aborting randomization process...')
 		return
 	if not '.smc' in SaveLocation:
 		SaveLocation += '.smc'
 	if LogVar.get() == 1:
-		LogLocation = filedialog.asksaveasfilename(title = "Choose where to save the log file...",filetypes = (("HTML File","*.html")))
+		LogLocation = filedialog.asksaveasfilename(title = "Choose where to save the log file...",filetypes = [("HTML File","*.html")])
 		if LogLocation == '':
 			print('Please, select a place to save the changelog file! Aborting randomization process...')
 			return
@@ -713,8 +758,9 @@ def RandomizingProcess():
 ###############################
 ### Randomization Functions ###
 ###############################
-	IncreaseEnemyStats(1, 1, 3, 30)
-	RandomizePlayableUnits() if PlayerClassVar.get() == 1 else False
+	if PlayerClassVar.get() == 1:
+		RandomizePlayableUnits()
+		PlayableCopyUnits()
 ###################
 ### Log Process ###
 ###################
