@@ -1,4 +1,5 @@
 ClassDec = 655575
+ClassBasesDec = 266860
 ClassList = {
 	'Lord': 0,
 	'Fighter': 1,

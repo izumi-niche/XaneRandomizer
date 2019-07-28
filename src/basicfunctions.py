@@ -28,6 +28,9 @@ def SupportCalc(number):
 def ClassDataCalc(number):
 	return number * 6
 
+def ClassDataBaseCalc(number):
+	return number * 9
+
 def ByteToInt(number):
 	return int.from_bytes(number, byteorder=sys.byteorder)
 

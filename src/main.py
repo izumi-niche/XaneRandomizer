@@ -91,6 +91,58 @@ def RandomizePlayableGrowths(mode, statrange):
 				fe3rom.write(growth)
 	print('Done!')
 
+# Randomizing playable units.
+# Will look for the character data to determine if it is a playable unit.
+def RandomizePlayableUnits():
+	CharacterList = GetCharacter(PlayableUnits)
+	UnitList = SearchForUnits()
+	UnitWrite = [] 
+	for unit in UnitList:
+		if UnitList[unit]['character'] in CharacterList:
+			UnitWrite.append(unit)
+	# Write
+	for unit in UnitWrite:
+		RandomizePlayableClasses(unit)
+		GiveWeapons(unit,'player')
+
+def CopyUnitItems(unit):
+	Thingy = {}
+	for x in [1, 8, 9, 10, 11, 12, 13]:
+		fe3rom.seek(unit + x)
+		HexRead = fe3rom.read(1)
+		Thingy[x] = HexRead
+	print(Thingy)
+	return Thingy
+
+def PlayableCopyUnits():
+	UnitList = SearchForUnits()
+	PlayableCharacters = GetCharacter(PlayableUnits)
+	DataCollected = {}
+	SpecialCopy = {}
+	for unit in ReplaceData:
+		SpecialCopy[CharacterDataList[ReplaceData[unit][1]]] = CharacterDataList[ReplaceData[unit][2]]
+		SpecialCopy[CharacterDataList[ReplaceData[unit][2]]] = CharacterDataList[ReplaceData[unit][1]]
+	for unit in UnitList:
+		y = UnitList[unit]['character']
+		if y in DataCollected:
+			for x in DataCollected[y]:
+				fe3rom.seek(unit + x)
+				fe3rom.write(DataCollected[y][x])
+		elif y in SpecialCopy:
+			UnitData = CopyUnitItems(unit)
+			DataCollected[y] = UnitData
+			DataCollected[SpecialCopy[y]] = UnitData
+		elif y in PlayableCharacters:
+			UnitData = CopyUnitItems(unit)
+			DataCollected[y] = UnitData
+
+def PlayableCopyBases():
+	for unit in ReplaceData:
+		for x in range(8):
+			fe3rom.seek(CharacterDec + UnitDataCalc(ReplaceData[1]) + x)
+			HexRead = fe3rom.read(1)
+			fe3rom.seek(CharacterDec + UnitDataCalc(ReplaceData[2]) + x)
+			fe3rom.write(HexRead)
 ###########################################
 ############## Enemy Options ##############
 ###########################################
@@ -322,16 +374,23 @@ def SearchForUnits():
 						FoundDict[ChapterCalc] = {}
 						FoundDict[ChapterCalc]['dec'] = ChapterCalc
 						FoundDict[ChapterCalc]['character'] = HexRead
-
-						fe3rom.seek(ChapterCalc + 3)
-						HexRead = fe3rom.read(1)
-						HexRead = ByteToInt(HexRead)
-						FoundDict[ChapterCalc]['name'] = HexRead
-
-						fe3rom.seek(ChapterCalc + 7)
-						HexRead = fe3rom.read(1)
-						HexRead = ByteToInt(HexRead)
-						FoundDict[ChapterCalc]['portrait'] = HexRead
+						SearchFor = {
+							'name': 3,
+							'portrait': 7,
+							'class': 1,
+							'level': 2,
+							'weapon1': 8,
+							'weapon2': 9,
+							'weapon3': 10,
+							'weapon4': 11,
+							'item1': 12,
+							'item2': 13
+						}
+						for x in SearchFor:
+							fe3rom.seek(ChapterCalc + SearchFor[x])
+							HexRead = fe3rom.read(1)
+							HexRead = ByteToInt(HexRead)
+							FoundDict[ChapterCalc][x] = HexRead
 						i += 1 
 
 				if EndThis == 1:
@@ -361,61 +420,44 @@ def SearchForUnits():
 					HexRead = fe3rom.read(1)
 					HexRead = ByteToInt(HexRead)
 					FoundDict[ChapterCalc]['portrait'] = HexRead
+
+					fe3rom.seek(ChapterCalc + 1)
+					HexRead = fe3rom.read(1)
+					HexRead = ByteToInt(HexRead)
+					FoundDict[ChapterCalc]['class'] = HexRead
+
+					fe3rom.seek(ChapterCalc + 8)
+					HexRead = fe3rom.read(1)
+					HexRead = ByteToInt(HexRead)
+					FoundDict[ChapterCalc]['weapon1'] = HexRead
+
+					fe3rom.seek(ChapterCalc + 9)
+					HexRead = fe3rom.read(1)
+					HexRead = ByteToInt(HexRead)
+					FoundDict[ChapterCalc]['weapon2'] = HexRead
+
+					fe3rom.seek(ChapterCalc + 10)
+					HexRead = fe3rom.read(1)
+					HexRead = ByteToInt(HexRead)
+					FoundDict[ChapterCalc]['weapon3'] = HexRead
+
+					fe3rom.seek(ChapterCalc + 11)
+					HexRead = fe3rom.read(1)
+					HexRead = ByteToInt(HexRead)
+					FoundDict[ChapterCalc]['weapon4'] = HexRead
+
+					fe3rom.seek(ChapterCalc + 12)
+					HexRead = fe3rom.read(1)
+					HexRead = ByteToInt(HexRead)
+					FoundDict[ChapterCalc]['item1'] = HexRead
+
+					fe3rom.seek(ChapterCalc + 13)
+					HexRead = fe3rom.read(1)
+					HexRead = ByteToInt(HexRead)
+					FoundDict[ChapterCalc]['item2'] = HexRead
 					i += 1 
 	return FoundDict
 
-# Randomizing playable units.
-# Will look for the character data to determine if it is a playable unit.
-def RandomizePlayableUnits():
-	CharacterList = GetCharacter(PlayableUnits)
-	UnitList = SearchForUnits()
-	UnitWrite = [] 
-	for unit in UnitList:
-		if UnitList[unit]['character'] in CharacterList:
-			UnitWrite.append(unit)
-	# Write
-	for unit in UnitWrite:
-		RandomizePlayableClasses(unit)
-		GiveWeapons(unit,'player')
-
-def CopyUnitItems(unit):
-	Thingy = {}
-	for x in [1, 8, 9, 10, 11, 12, 13]:
-		fe3rom.seek(unit + x)
-		HexRead = fe3rom.read(1)
-		Thingy[x] = HexRead
-	print(Thingy)
-	return Thingy
-
-def PlayableCopyUnits():
-	UnitList = SearchForUnits()
-	PlayableCharacters = GetCharacter(PlayableUnits)
-	DataCollected = {}
-	SpecialCopy = {}
-	for unit in ReplaceData:
-		SpecialCopy[CharacterDataList[ReplaceData[unit][1]]] = CharacterDataList[ReplaceData[unit][2]]
-		SpecialCopy[CharacterDataList[ReplaceData[unit][2]]] = CharacterDataList[ReplaceData[unit][1]]
-	for unit in UnitList:
-		y = UnitList[unit]['character']
-		if y in DataCollected:
-			for x in DataCollected[y]:
-				fe3rom.seek(unit + x)
-				fe3rom.write(DataCollected[y][x])
-		elif y in SpecialCopy:
-			UnitData = CopyUnitItems(unit)
-			DataCollected[y] = UnitData
-			DataCollected[SpecialCopy[y]] = UnitData
-		elif y in PlayableCharacters:
-			UnitData = CopyUnitItems(unit)
-			DataCollected[y] = UnitData
-
-def PlayableCopyBases():
-	for unit in ReplaceData:
-		for x in range(8):
-			fe3rom.seek(CharacterDec + UnitDataCalc(ReplaceData[1]) + x)
-			HexRead = fe3rom.read(1)
-			fe3rom.seek(CharacterDec + UnitDataCalc(ReplaceData[2]) + x)
-			fe3rom.write(HexRead)
 ############################
 ### Give weapons routine ###
 ############################
@@ -657,34 +699,10 @@ def RandomizeEnemyClasses(unit):
 	fe3rom.seek(unit + 1)
 	fe3rom.write(NewClass)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-root = Tk()
-
-
-
 #######################################
 ############## GUI Stuff ##############
 #######################################
-
+root = Tk()
 ###############
 ### Playable
 ###############
@@ -714,7 +732,7 @@ checkmarkRandomizeGrowthsPlayer.grid(row = 3, column = 0, stick = W)
 PlayerGrowthsModeVar = IntVar()
 PlayerGrowthsModeVar.set(1)
 radiobuttonGrowthsFullMode = Radiobutton(LabelPlayable, text = 'Full Mode', variable = PlayerGrowthsModeVar, value = 1)
-radiobuttonGrowthsRangeMode = Radiobutton(LabelPlayable, text = 'Range Mode', variable = PlayerGrowthsModeVar, value = 2)
+radiobuttonGrowthsRangeMode = Radiobutton(LabelPlayable, text = 'Range Mode', variable = PlayerGrowthsModeVar, value = 0)
 radiobuttonGrowthsFullMode.grid(row = 4, column = 0, stick = W)
 radiobuttonGrowthsRangeMode.grid(row = 5, column = 0, stick = W)
 
@@ -728,7 +746,7 @@ PlayerGrowthsRange.grid(row = 6, column = 0, stick = E)
 ########################### Functions ############################
 ##################################################################
 def SelectFile():
-	RomLocation.set(filedialog.askopenfilename(title = "Select FE3 rom...",filetypes = (("SNES .smc files","*.smc"), ("SNES .fig files","*.fig"),("All Files","*.*"))))
+	RomLocation.set(filedialog.askopenfilename(title = "Select FE3 rom...",filetypes = [("All Files","*.*")]))
 def RandomizingProcess():
 	global fe3rom
 ######################
@@ -758,20 +776,29 @@ def RandomizingProcess():
 ###############################
 ### Randomization Functions ###
 ###############################
+# Playable class randomization
 	if PlayerClassVar.get() == 1:
 		RandomizePlayableUnits()
 		PlayableCopyUnits()
+# Playable bases randomization
+	if PlayerBasesVar.get() == 1:
+		RandomizePlayableBases(PlayerBasesRangeVar.get())
+		PlayableCopyBases()
+# Playable growths randomization
+	if PlayerGrowthsVar.get() == 1:
+		RandomizePlayableGrowths(PlayerGrowthsModeVar.get(), PlayerGrowthsRangeVar.get())
 ###################
 ### Log Process ###
 ###################
 	if LogVar.get() == 1:
 		CreateLogFile(LogLocation)
+		if PlayerBasesVar.get() == 1 or PlayerGrowthsVar.get() == 1 or PlayerClassVar.get() == 1:
+			CreatePlayableLog(LogLocation, SaveLocation, SearchForUnits())
+		#CreateSupportLog(LogLocation, SaveLocation)
 
-		CreateSupportLog(LogLocation, SaveLocation)
+		
 
 		EndLogFile(LogLocation)
-
-
 
 ###########################
 ########## Other ##########
@@ -791,9 +818,6 @@ labelReadme.grid(row = 2, columnspan = 3, column = 0)
 
 buttonRandomize = Button(root, text='Randomize!', width = 50, command = RandomizingProcess)
 buttonRandomize.grid(row = 3, columnspan = 3, column = 0)
-
-
-
 
 root.title('Xane Randomizer: A FE3 Randomizer')
 root.iconbitmap('xane.ico')

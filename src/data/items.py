@@ -126,4 +126,5 @@ items = {
 	'Member Card': 124,
 	'Light Orb': 125,
 	'Star Orb': 126,
+	'Nothing': 255
 }

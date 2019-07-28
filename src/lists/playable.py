@@ -94,5 +94,14 @@ PlayableUnits = [
 	'Maria2',
 	'Elice2',
 	'Lena2',
-	'Palla2'
+	'Palla2',
+	'SamsonE',
+	'NavarreE',
+	'RickardE',
+	'JeorgeE',
+	'SheenaE',
+	'MinervaE',
+	'AstramE',
+	'PallaE',
+	'EstE'
 ]
