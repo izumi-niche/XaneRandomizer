@@ -183,14 +183,14 @@ def CreatePlayableLog(changelog, fe3rom, unitlist):
 		DummyString = """
 <tr>
 		<th> Growths </th>
-		<td style="text-align:center"> {} </td>
-		<td style="text-align:center"> {} </td>
-		<td style="text-align:center"> {} </td>
-		<td style="text-align:center"> {} </td>
-		<td style="text-align:center"> {} </td>
-		<td style="text-align:center"> {} </td>
-		<td style="text-align:center"> {} </td>
-		<td style="text-align:center"> {} </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
 	</tr>
 </table>
 """

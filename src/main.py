@@ -143,6 +143,38 @@ def PlayableCopyBases():
 			HexRead = fe3rom.read(1)
 			fe3rom.seek(CharacterDec + UnitDataCalc(ReplaceData[2]) + x)
 			fe3rom.write(HexRead)
+
+# Give a dragonstone to prevent Book 1 Tiki from softlocking the game
+def FixManakete(manakete):
+	ManaketeList = []
+	ManaketePortrait = []
+	NewDragonStone = '???'
+	if manakete == 'player':
+		ManaketeList.append(CharacterDataList['Tiki'])
+		NewDragonStone = bytes([items['Divinestone']])
+	else:
+		for x in ['Xemcel', 'Khozel', 'Morzas', 'Xemcel']:
+			ManaketePortrait.append(PortraitList[x])
+		NewDragonStone = bytes([items['FireStone']])
+	UnitList = SearchForUnits()
+	for unit in UnitList:
+		if UnitList[unit]['character'] in ManaketeList or UnitList[unit]['portrait'] in ManaketePortrait:
+			ItemList = []
+			ReplaceItem = []
+			for x in range(4):
+				NumberSeek = unit + 8 + x
+				fe3rom.seek(NumberSeek)
+				ItemList.append(fe3rom.read(1))
+			ReplaceItem.append(NewDragonStone)
+			for x in range(4):
+				if not ByteToInt(ItemList[x]) == 255:
+					ReplaceItem.append(ItemList[x])
+			x = 0
+			for y in ReplaceItem:
+				fe3rom.seek(unit + 8 + x)
+				fe3rom.write(y)
+				x += 1
+
 ###########################################
 ############## Enemy Options ##############
 ###########################################
@@ -779,6 +811,7 @@ def RandomizingProcess():
 # Playable class randomization
 	if PlayerClassVar.get() == 1:
 		RandomizePlayableUnits()
+		FixManakete('player')
 		PlayableCopyUnits()
 # Playable bases randomization
 	if PlayerBasesVar.get() == 1:
