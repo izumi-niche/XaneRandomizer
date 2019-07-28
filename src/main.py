@@ -373,7 +373,65 @@ def BreakRapierLock():
 ############## Support Options ##############
 #############################################
 
-
+def RandomizeSupports(minsupport, maxsupport, minbonus, maxbonus):
+	NewSupports = {}
+	SupportingUnits = []
+	DummyDict = []
+	for x in NameDict:
+		DummyDict.append(NameDict[x])
+	z = 0
+	for x in DummyDict:
+		RandomNumber = random.randint(0, len(DummyDict) - 1)
+		SupportingUnits.append(DummyDict[RandomNumber])
+		DummyDict.pop(RandomNumber)
+	for name in NameDict:
+		NumberOfSupports = random.randint(minsupport, maxsupport)
+		for x in range(NumberOfSupports):
+			while True:
+				CreateSupport = []
+				CreateSupport.append(NameDict[name])
+				CreateSupport.append(SupportingUnits[random.randint(0, len(SupportingUnits) - 1)])
+				Skip = 0
+				for y in NewSupports:
+					if NewSupports[y]['supporter'] == CreateSupport[0]:
+						if NewSupports[y]['supported'] == CreateSupport[1]:
+							Skip = 1
+							break
+				if Skip == 1:
+					continue
+				NewSupports[z] = {}
+				NewSupports[z]['supporter'] = CreateSupport[0]
+				NewSupports[z]['supported'] = CreateSupport[1]
+				NewSupports[z]['bonus'] = random.randint(minbonus, maxbonus)
+				z += 1
+				break
+	print(NewSupports)
+	# Clear the support list
+	x = 0
+	while True:
+		End = 0
+		for y in range(3):
+			fe3rom.seek(SupportDec + SupportCalc(x) + y)
+			HexRead = ByteToInt(fe3rom.read(1))
+			if HexRead == 255:
+				End = 1
+				break
+			else:
+				fe3rom.seek(SupportDec + SupportCalc(x) + y)
+				fe3rom.write(bytes([255]))
+				x += 1
+		if End == 1:
+			break
+	# Write the new supports
+	x = 0
+	for support in NewSupports:
+		z = 0
+		for y in ['supporter', 'supported', 'bonus']:
+			fe3rom.seek(SupportDec + SupportCalc(x) + z)
+			fe3rom.write(bytes([NewSupports[support][y]]))
+			z += 1
+		x += 1
+	print('Done!')
 
 #############################################################
 ############## Map Data unit randomization ##################
@@ -774,6 +832,15 @@ textPlayerGrowthRange = Label(LabelPlayable, text = 'Growths Range:')
 textPlayerGrowthRange.grid(row = 6, column = 0, stick = W)
 PlayerGrowthsRange = Entry(LabelPlayable, width = 5, textvariable = PlayerGrowthsRangeVar)
 PlayerGrowthsRange.grid(row = 6, column = 0, stick = E)
+###############
+### Support
+###############
+LabelSupport = LabelFrame(root, text="Support Options")
+LabelSupport.grid(row = 2, column = 0, stick=NW)
+
+RandomizeSupportsVar = IntVar()
+checkmarkRandomizeSupports = Checkbutton(LabelSupport, text = 'Randomize Supports')
+checkmarkRandomizeSupports.grid(row = 1, column = 0, stick = W)
 ##################################################################
 ########################### Functions ############################
 ##################################################################
@@ -820,14 +887,17 @@ def RandomizingProcess():
 # Playable growths randomization
 	if PlayerGrowthsVar.get() == 1:
 		RandomizePlayableGrowths(PlayerGrowthsModeVar.get(), PlayerGrowthsRangeVar.get())
+# Support Randomization
+	RandomizeSupports(0, 5, 10, 50)
 ###################
 ### Log Process ###
 ###################
+	fe3rom.close()
 	if LogVar.get() == 1:
 		CreateLogFile(LogLocation)
 		if PlayerBasesVar.get() == 1 or PlayerGrowthsVar.get() == 1 or PlayerClassVar.get() == 1:
 			CreatePlayableLog(LogLocation, SaveLocation, SearchForUnits())
-		#CreateSupportLog(LogLocation, SaveLocation)
+		CreateSupportLog(LogLocation, SaveLocation)
 
 		
 
@@ -847,10 +917,10 @@ checkmarkCreateLog = Checkbutton(root, text = 'Create Log', variable = LogVar)
 checkmarkCreateLog.grid(row = 0, column = 0, stick=E)
 
 labelReadme = Label(root, text = 'For more information on the options or a fix to possible user errors, please read the Readme.')
-labelReadme.grid(row = 2, columnspan = 3, column = 0)
+labelReadme.grid(row = 3, columnspan = 3, column = 0)
 
 buttonRandomize = Button(root, text='Randomize!', width = 50, command = RandomizingProcess)
-buttonRandomize.grid(row = 3, columnspan = 3, column = 0)
+buttonRandomize.grid(row = 4, columnspan = 3, column = 0)
 
 root.title('Xane Randomizer: A FE3 Randomizer')
 root.iconbitmap('xane.ico')

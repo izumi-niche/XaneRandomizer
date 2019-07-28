@@ -13,6 +13,8 @@ from lists.itempool import *
 from lists.playable import *
 from lists.weaponpool import *
 
+SupportDec = 282417
+
 def UnitDataCalc(number):
 	return number * 17
 

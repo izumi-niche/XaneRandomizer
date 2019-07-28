@@ -29,7 +29,6 @@ def CreateSupportLog(changelog, fe3rom):
 	changelog = open(changelog, 'a')
 	fe3rom = open(fe3rom, 'rb')
 	CharacterDict = ReverseDict(NameDict)
-	SupportDec = 282417
 	i = 0
 	SupportDict = {}
 	while True:
@@ -53,19 +52,19 @@ def CreateSupportLog(changelog, fe3rom):
 	DummyString = """
 <h2> Supports </h2>
 
-<table style="width:100%">
+<table style="width:25%">
 	<tr>
 		<th>Supporter</th>
 		<th>Supported</th> 
-		<th>Hit/Avoid/Crit Bonus</th>
+		<th style="text-align:left">Bonus</th>
 	</tr>
 """
 	changelog.write(DummyString)
 	for i in SupportDict:
 		DummyString = """
 	<tr>
-		<td>{}</td>
-		<td>{}</td>
+		<td style="text-align:center">{}</td>
+		<td style="text-align:center">{}</td>
 		<td>{}</td>
 	</tr>
 """
