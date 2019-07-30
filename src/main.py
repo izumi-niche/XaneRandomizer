@@ -839,8 +839,44 @@ LabelSupport = LabelFrame(root, text="Support Options")
 LabelSupport.grid(row = 2, column = 0, stick=NW)
 
 RandomizeSupportsVar = IntVar()
-checkmarkRandomizeSupports = Checkbutton(LabelSupport, text = 'Randomize Supports')
+checkmarkRandomizeSupports = Checkbutton(LabelSupport, text = 'Randomize Supports', variable = RandomizeSupportsVar)
 checkmarkRandomizeSupports.grid(row = 1, column = 0, stick = W)
+
+labelSupportCountMin = Label(LabelSupport, text = 'Minimum characters supported')
+labelSupportCountMin2 = Label(LabelSupport, text = 'by one character:')
+labelSupportCountMin.grid(row = 2, column = 0, stick = W)
+labelSupportCountMin2.grid(row = 3, column = 0, stick = W)
+
+SupportMinCountVar = IntVar()
+SupportMinCountVar.set(0)
+entrySupportMinCount = Entry(LabelSupport, width = 5, textvariable = SupportMinCountVar)
+entrySupportMinCount.grid(row = 3, column = 0, stick = E)
+
+labelSupportCountMax = Label(LabelSupport, text = 'Maximum characters supported')
+labelSupportCountMax2 = Label(LabelSupport, text = 'by one character:')
+labelSupportCountMax.grid(row = 4, column = 0, stick = W)
+labelSupportCountMax2.grid(row = 5, column = 0, stick = W)
+
+SupportMaxCountVar = IntVar()
+SupportMaxCountVar.set(3)
+entrySupportMaxCount = Entry(LabelSupport, width = 5, textvariable = SupportMaxCountVar)
+entrySupportMaxCount.grid(row = 5, column = 0, stick = E)
+
+labelSupportBonusMin = Label(LabelSupport, text = 'Minimum bonus:')
+labelSupportBonusMin.grid(row = 6, column = 0, stick = W)
+
+SupportMinBonusVar = IntVar()
+SupportMinBonusVar.set(5)
+entrySupportMinBonus = Entry(LabelSupport, width = 5, textvariable = SupportMinBonusVar)
+entrySupportMinBonus.grid(row = 6, column = 0, stick = E)
+
+labelSupportBonusMax = Label(LabelSupport, text = 'Maximum bonus:')
+labelSupportBonusMax.grid(row = 7, column = 0, stick = W)
+
+SupportMaxBonusVar = IntVar()
+SupportMaxBonusVar.set(20)
+entrySupportMaxBonus = Entry(LabelSupport, width = 5, textvariable = SupportMaxBonusVar)
+entrySupportMaxBonus.grid(row = 7, column = 0, stick = E)
 ##################################################################
 ########################### Functions ############################
 ##################################################################
@@ -888,7 +924,8 @@ def RandomizingProcess():
 	if PlayerGrowthsVar.get() == 1:
 		RandomizePlayableGrowths(PlayerGrowthsModeVar.get(), PlayerGrowthsRangeVar.get())
 # Support Randomization
-	RandomizeSupports(0, 5, 10, 50)
+	if RandomizeSupportsVar.get() == 1:
+		RandomizeSupports(SupportMinCountVar.get(), SupportMaxCountVar.get(), SupportMinBonusVar.get(), SupportMaxBonusVar.get())
 ###################
 ### Log Process ###
 ###################
@@ -897,7 +934,8 @@ def RandomizingProcess():
 		CreateLogFile(LogLocation)
 		if PlayerBasesVar.get() == 1 or PlayerGrowthsVar.get() == 1 or PlayerClassVar.get() == 1:
 			CreatePlayableLog(LogLocation, SaveLocation, SearchForUnits())
-		CreateSupportLog(LogLocation, SaveLocation)
+		if RandomizeSupportsVar.get() == 1:
+			CreateSupportLog(LogLocation, SaveLocation)
 
 		
 
