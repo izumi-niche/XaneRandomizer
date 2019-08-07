@@ -25,6 +25,40 @@ from tkinter import filedialog
 
 fe3rom = open('dummy.deleteme', 'w')
 changelog = open('dummy.deleteme', 'w')
+##############################################
+############## Basic stuff ###################
+##############################################
+#Things that will be used a lot.
+#Edit unit data
+def UnitEdit(dec, location, mode='Get', hexdata='error'):
+	DataLocation = {
+		'character': 0,
+		'class': 1,
+		'level': 2,
+		'name': 3,
+		'x': 4,
+		'y': 5,
+		'portrait': 7,
+		'weapon1': 8,
+		'weapon2': 9,
+		'weapon3': 10,
+		'weapon4': 11,
+		'item1': 12,
+		'item2': 13,
+		'ai1': 16,
+		'ai2': 17,
+		'ai3': 18
+	}
+	if type(hexdata) is int:
+		hexdata = bytes([hexdata])
+	if mode == 'Write':
+		fe3rom.seek(dec + DataLocation[location])
+		fe3.write(hexdata)
+		return
+	elif mode == 'Get':
+		fe3rom.seek(dec + DataLocation[location])
+		HexRead = ByteToInt(fe3rom.read(1))
+		return HexRead
 
 ##############################################
 ############## Playable options ##############
@@ -367,7 +401,7 @@ def BreakRapierLock():
 	fe3rom.write(bytes([2]))
 	SwordSteel.append('Rapier')
 	SwordSteelEnemy.append('Rapier')
-	print('Done!')
+	print('Done!')	
 
 #############################################
 ############## Support Options ##############
@@ -378,12 +412,8 @@ def RandomizeSupports(minsupport, maxsupport, minbonus, maxbonus):
 	SupportingUnits = []
 	DummyDict = []
 	for x in NameDict:
-		DummyDict.append(NameDict[x])
-	z = 0
-	for x in DummyDict:
-		RandomNumber = random.randint(0, len(DummyDict) - 1)
-		SupportingUnits.append(DummyDict[RandomNumber])
-		DummyDict.pop(RandomNumber)
+		SupportingUnits.append(NameDict[x])
+	SupportingUnits = random.shuffle(SupportingUnits)
 	for name in NameDict:
 		NumberOfSupports = random.randint(minsupport, maxsupport)
 		for x in range(NumberOfSupports):
@@ -439,6 +469,18 @@ def RandomizeSupports(minsupport, maxsupport, minbonus, maxbonus):
 ###### Function for finding units, than adding them into a dict.
 def SearchForUnits():
 	FoundDict = {}
+	SearchFor = {
+	'name': 3,
+	'portrait': 7,
+	'class': 1,
+	'level': 2,
+	'weapon1': 8,
+	'weapon2': 9,
+	'weapon3': 10,
+	'weapon4': 11,
+	'item1': 12,
+	'item2': 13
+	}
 	for chapter in chapterunits:
 		if chapterunits[chapter]['type'] == 'table':
 			UnitCount = chapterunits[chapter]['size']
@@ -464,18 +506,6 @@ def SearchForUnits():
 						FoundDict[ChapterCalc] = {}
 						FoundDict[ChapterCalc]['dec'] = ChapterCalc
 						FoundDict[ChapterCalc]['character'] = HexRead
-						SearchFor = {
-							'name': 3,
-							'portrait': 7,
-							'class': 1,
-							'level': 2,
-							'weapon1': 8,
-							'weapon2': 9,
-							'weapon3': 10,
-							'weapon4': 11,
-							'item1': 12,
-							'item2': 13
-						}
 						for x in SearchFor:
 							fe3rom.seek(ChapterCalc + SearchFor[x])
 							HexRead = fe3rom.read(1)
@@ -500,51 +530,11 @@ def SearchForUnits():
 					FoundDict[ChapterCalc] = {}
 					FoundDict[ChapterCalc]['dec'] = ChapterCalc
 					FoundDict[ChapterCalc]['character'] = HexRead
-
-					fe3rom.seek(ChapterCalc + 3)
-					HexRead = fe3rom.read(1)
-					HexRead = ByteToInt(HexRead)
-					FoundDict[ChapterCalc]['name'] = HexRead
-
-					fe3rom.seek(ChapterCalc + 7)
-					HexRead = fe3rom.read(1)
-					HexRead = ByteToInt(HexRead)
-					FoundDict[ChapterCalc]['portrait'] = HexRead
-
-					fe3rom.seek(ChapterCalc + 1)
-					HexRead = fe3rom.read(1)
-					HexRead = ByteToInt(HexRead)
-					FoundDict[ChapterCalc]['class'] = HexRead
-
-					fe3rom.seek(ChapterCalc + 8)
-					HexRead = fe3rom.read(1)
-					HexRead = ByteToInt(HexRead)
-					FoundDict[ChapterCalc]['weapon1'] = HexRead
-
-					fe3rom.seek(ChapterCalc + 9)
-					HexRead = fe3rom.read(1)
-					HexRead = ByteToInt(HexRead)
-					FoundDict[ChapterCalc]['weapon2'] = HexRead
-
-					fe3rom.seek(ChapterCalc + 10)
-					HexRead = fe3rom.read(1)
-					HexRead = ByteToInt(HexRead)
-					FoundDict[ChapterCalc]['weapon3'] = HexRead
-
-					fe3rom.seek(ChapterCalc + 11)
-					HexRead = fe3rom.read(1)
-					HexRead = ByteToInt(HexRead)
-					FoundDict[ChapterCalc]['weapon4'] = HexRead
-
-					fe3rom.seek(ChapterCalc + 12)
-					HexRead = fe3rom.read(1)
-					HexRead = ByteToInt(HexRead)
-					FoundDict[ChapterCalc]['item1'] = HexRead
-
-					fe3rom.seek(ChapterCalc + 13)
-					HexRead = fe3rom.read(1)
-					HexRead = ByteToInt(HexRead)
-					FoundDict[ChapterCalc]['item2'] = HexRead
+					for x in SearchFor:
+						fe3rom.seek(ChapterCalc + SearchFor[x])
+						HexRead = fe3rom.read(1)
+						HexRead = ByteToInt(HexRead)
+						FoundDict[ChapterCalc][x] = HexRead
 					i += 1 
 	return FoundDict
 
@@ -912,6 +902,7 @@ def RandomizingProcess():
 ### Randomization Functions ###
 ###############################
 # Playable class randomization
+	RandomizeRecruitment()
 	if PlayerClassVar.get() == 1:
 		RandomizePlayableUnits()
 		FixManakete('player')
@@ -936,9 +927,6 @@ def RandomizingProcess():
 			CreatePlayableLog(LogLocation, SaveLocation, SearchForUnits())
 		if RandomizeSupportsVar.get() == 1:
 			CreateSupportLog(LogLocation, SaveLocation)
-
-		
-
 		EndLogFile(LogLocation)
 
 ###########################
