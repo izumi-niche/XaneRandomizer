@@ -1,5 +1,17 @@
-# Will's dumb checklist
-# IMPORTANT
+# Xane Randomizer
+	Xane Randomizer is a randomizer for the game Fire Emblem: Mystery of the Emblem for the SNES, also know as FE3.
+	For more information how to use it and other stuff, read more below.
+
+## Code
+	This is my first project, which as expected, the code is a bit messy more than I care to admit. I may rewrite
+this thing in the extremely long future, but for now the main structure will stay like that. Well if you are not here for the source code, continue reading since everything after this is actual information!
+
+## What ROM to use? And what translation patch?
+	This randomizer has been tested with the a ROM with the 1.1 version, with the translation patch made by
+Quirino, [available here.](https://forums.serenesforest.net/index.php?/topic/49096-updated-mystery-of-the-emblem-fan-translation-version-014-released/). Also it works with a clean 1.1/1.0 ROM. A 1.0 ROM with the translation should 99% work.
+![thiefmarth](/images/thiefmarth.png)
+*Marth randomized into the thief class in a 1.0 ROM*
+
 
 Give dragonstones to Book 1 Tiki and Manakete bosses to prevent softlocking
 

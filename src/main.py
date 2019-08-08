@@ -25,40 +25,6 @@ from tkinter import filedialog
 
 fe3rom = open('dummy.deleteme', 'w')
 changelog = open('dummy.deleteme', 'w')
-##############################################
-############## Basic stuff ###################
-##############################################
-#Things that will be used a lot.
-#Edit unit data
-def UnitEdit(dec, location, mode='Get', hexdata='error'):
-	DataLocation = {
-		'character': 0,
-		'class': 1,
-		'level': 2,
-		'name': 3,
-		'x': 4,
-		'y': 5,
-		'portrait': 7,
-		'weapon1': 8,
-		'weapon2': 9,
-		'weapon3': 10,
-		'weapon4': 11,
-		'item1': 12,
-		'item2': 13,
-		'ai1': 16,
-		'ai2': 17,
-		'ai3': 18
-	}
-	if type(hexdata) is int:
-		hexdata = bytes([hexdata])
-	if mode == 'Write':
-		fe3rom.seek(dec + DataLocation[location])
-		fe3.write(hexdata)
-		return
-	elif mode == 'Get':
-		fe3rom.seek(dec + DataLocation[location])
-		HexRead = ByteToInt(fe3rom.read(1))
-		return HexRead
 
 ##############################################
 ############## Playable options ##############
@@ -902,7 +868,6 @@ def RandomizingProcess():
 ### Randomization Functions ###
 ###############################
 # Playable class randomization
-	RandomizeRecruitment()
 	if PlayerClassVar.get() == 1:
 		RandomizePlayableUnits()
 		FixManakete('player')
@@ -921,6 +886,7 @@ def RandomizingProcess():
 ### Log Process ###
 ###################
 	fe3rom.close()
+	fe3rom = open(SaveLocation, 'rb+')
 	if LogVar.get() == 1:
 		CreateLogFile(LogLocation)
 		if PlayerBasesVar.get() == 1 or PlayerGrowthsVar.get() == 1 or PlayerClassVar.get() == 1:
@@ -928,6 +894,9 @@ def RandomizingProcess():
 		if RandomizeSupportsVar.get() == 1:
 			CreateSupportLog(LogLocation, SaveLocation)
 		EndLogFile(LogLocation)
+
+	fe3rom.close()
+	changelog.close()
 
 ###########################
 ########## Other ##########
