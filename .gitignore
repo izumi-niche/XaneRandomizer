@@ -1,3 +1,7 @@
 __pycache__/
 *.deleteme
 *.ips
+*.manifest
+*.spec
+build/
+dist/

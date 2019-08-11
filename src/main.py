@@ -139,9 +139,9 @@ def PlayableCopyUnits():
 def PlayableCopyBases():
 	for unit in ReplaceData:
 		for x in range(8):
-			fe3rom.seek(CharacterDec + UnitDataCalc(ReplaceData[1]) + x)
+			fe3rom.seek(CharacterDec + UnitDataCalc(CharacterDataList[ReplaceData[unit][1]]) + x)
 			HexRead = fe3rom.read(1)
-			fe3rom.seek(CharacterDec + UnitDataCalc(ReplaceData[2]) + x)
+			fe3rom.seek(CharacterDec + UnitDataCalc(CharacterDataList[ReplaceData[unit][1]]) + x)
 			fe3rom.write(HexRead)
 
 # Give a dragonstone to prevent Book 1 Tiki from softlocking the game
@@ -379,7 +379,7 @@ def RandomizeSupports(minsupport, maxsupport, minbonus, maxbonus):
 	DummyDict = []
 	for x in NameDict:
 		SupportingUnits.append(NameDict[x])
-	SupportingUnits = random.shuffle(SupportingUnits)
+	z = 0
 	for name in NameDict:
 		NumberOfSupports = random.randint(minsupport, maxsupport)
 		for x in range(NumberOfSupports):
@@ -401,7 +401,6 @@ def RandomizeSupports(minsupport, maxsupport, minbonus, maxbonus):
 				NewSupports[z]['bonus'] = random.randint(minbonus, maxbonus)
 				z += 1
 				break
-	print(NewSupports)
 	# Clear the support list
 	x = 0
 	while True:
@@ -836,6 +835,32 @@ entrySupportMaxBonus.grid(row = 7, column = 0, stick = E)
 ##################################################################
 ########################### Functions ############################
 ##################################################################
+class BasicWindow:
+	def __init__(self, text):
+		self.window = Toplevel(root)
+		self.label = Label(self.window, text = text)
+		self.button = Button(self.window, text = 'Ok', command = self.quit)
+		self.label.grid(row = 0, column = 0)
+		self.button.grid(row = 1, column = 0)
+		self.window.title('!')
+		self.window.iconbitmap('xane.ico')
+	def quit(self):
+		self.window.destroy()
+
+class FinishWindow:
+	def __init__(self):
+		self.window = Toplevel(root)
+		self.label = Label(self.window, text = 'Randomization finished! \n You can find the ROM and the log in the place where you saved it. \n The randomizer will close now...')
+		self.button = Button(self.window, text = 'Ok!', command = self.quit)
+		self.label.grid(row = 0, column = 0)
+		self.button.grid(row = 1, column = 0)
+		self.window.title('Finished!')
+		self.window.iconbitmap('xane.ico')
+
+	def quit(self):
+		self.window.destroy()
+		root.destroy()
+		sys.exit()
 def SelectFile():
 	RomLocation.set(filedialog.askopenfilename(title = "Select FE3 rom...",filetypes = [("All Files","*.*")]))
 def RandomizingProcess():
@@ -845,25 +870,28 @@ def RandomizingProcess():
 ######################
 	FileLocation = RomLocation.get()
 	if FileLocation == '':
-		print('Please, select a FE3 rom first!')
+		PopUpBox = BasicWindow('Please, select a FE3 rom first!')
 		return
 	SaveLocation = filedialog.asksaveasfilename(title = "Choose where to save the randomize rom...",filetypes = [("SNES .smc files","*.smc")])
 	if SaveLocation == '':
-		print('Please, select a place to save the FE3 randomized rom! Aborting randomization process...')
+		PopUpBox = BasicWindow('Please, select a place to save the FE3 randomized rom! Aborting randomization process...')
 		return
 	if not '.smc' in SaveLocation:
 		SaveLocation += '.smc'
 	if LogVar.get() == 1:
 		LogLocation = filedialog.asksaveasfilename(title = "Choose where to save the log file...",filetypes = [("HTML File","*.html")])
 		if LogLocation == '':
-			print('Please, select a place to save the changelog file! Aborting randomization process...')
+			PopUpBox = BasicWindow('Please, select a place to save the changelog file! Aborting randomization process...')
 			return
 		else:
 			if not '.html' in LogLocation:
 				LogLocation += '.html'
 			changelog = open(LogLocation, 'w')
+
+
 	shutil.copyfile(FileLocation, SaveLocation)
 	fe3rom = open(SaveLocation, 'rb+')
+	PopUpBox = BasicWindow('The ROM is now being randomized! Please, wait a bit.')
 ###############################
 ### Randomization Functions ###
 ###############################
@@ -894,10 +922,13 @@ def RandomizingProcess():
 		if RandomizeSupportsVar.get() == 1:
 			CreateSupportLog(LogLocation, SaveLocation)
 		EndLogFile(LogLocation)
-
 	fe3rom.close()
 	changelog.close()
-
+	try:
+		PopUpBox.quit()
+	except:
+		'hi'
+	done = FinishWindow()
 ###########################
 ########## Other ##########
 ###########################
