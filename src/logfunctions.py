@@ -136,7 +136,6 @@ def CreatePlayableLog(changelog, fe3rom, unitlist):
 					fe3rom.seek(ClassBasesDec + ClassDataBaseCalc(unitlist[unit]['class']) + FindStatsClass[x])
 					HexRead = ByteToInt(fe3rom.read(1))
 					UnitData[NewUnit][x] += HexRead
-				print(UnitData[NewUnit])
 	# Write in the changelog
 	DummyString = """
 	<h2> Playable Units </h2>

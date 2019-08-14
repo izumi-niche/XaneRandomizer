@@ -26,6 +26,10 @@ from tkinter import filedialog
 fe3rom = open('dummy.deleteme', 'w')
 changelog = open('dummy.deleteme', 'w')
 
+def ReadHex(location):
+	fe3rom.seek(location)
+	HexRead = fe3rom.read(1)
+	return ByteToInt(HexRead)
 ##############################################
 ############## Playable options ##############
 ##############################################
@@ -111,7 +115,6 @@ def CopyUnitItems(unit):
 		fe3rom.seek(unit + x)
 		HexRead = fe3rom.read(1)
 		Thingy[x] = HexRead
-	print(Thingy)
 	return Thingy
 
 def PlayableCopyUnits():
@@ -748,90 +751,132 @@ def RandomizeEnemyClasses(unit):
 ############## GUI Stuff ##############
 #######################################
 root = Tk()
+
+class CreateLabel:
+	def __init__(self, text, row, column, sticky=NW):
+		self.label = LabelFrame(root, text= text)
+		self.label.grid(row = row, column = column, stick = sticky)
+		self.VarList = {}
+		self.maxcolumn = 0
+		self.maxrow = 0
+
+	def check(self, varname):
+		print(self.VarList[varname].get())
+		return self.VarList[varname].get()
+
+	def checkbutton(self, text, varname, row, column, sticky=W):
+		self.VarList[varname] = IntVar()
+		self.checkbuttonFunc = Checkbutton(self.label, text = text, variable = self.VarList[varname])
+		self.checkbuttonFunc.grid(row = row, column = column, stick=sticky)
+
+	def button(self, text, command, row, column, sticky=W):
+		self.buttonFunc = Button(self.label, text = text, command = command)
+		self.buttonFunc.grid(row = row, column = column, stick=sticky)
+
+	def radiobutton(self, text, varname, row, column, sticky=W, default=0):
+		self.VarList[varname] = IntVar()
+		self.VarList[varname].set(default)
+		x = 0
+		y = row
+		for name in text:
+			self.radiobuttonFunc = Radiobutton(self.label, text = name, variable = self.VarList[varname], value = x)
+			self.radiobuttonFunc.grid(row = y, column = column, stick=sticky)
+			x += 1
+			y += 1
+
+	def entry(self, text, width, row, column, default=0, sticky=W):
+		self.VarList[text] = IntVar()
+		self.VarList[text].set(default)
+		self.entryFunc = Entry(self.label, width = width, textvariable = self.VarList[text])
+		self.entryFunc.grid(row = row, column = column, stick=sticky)
+
+	def textlabel(self, text, row, column, sticky=W):
+		self.labelFunc = Label(self.label, text = text)
+		self.labelFunc.grid(row = row, column = column, stick=sticky)
+
 ###############
 ### Playable
 ###############
-LabelPlayable = LabelFrame(root, text="Playable Options")
-LabelPlayable.grid(row = 1, column = 0, stick=NW)
+LabelPlayable = CreateLabel('Playable Options', 1, 0)
 
-PlayerClassVar = IntVar()
-checkmarkRandomizeClassesPlayer = Checkbutton(LabelPlayable, text = 'Randomize classes', variable = PlayerClassVar)
-checkmarkRandomizeClassesPlayer.grid(row = 0, column = 0, stick=W)
+LabelPlayable.checkbutton('Randomize classes', 'PlayerClass', 0, 0)
 
-PlayerBasesVar = IntVar()
-checkmarkRandomizeBasesPlayer = Checkbutton(LabelPlayable, text = 'Randomize bases', variable = PlayerBasesVar)
-checkmarkRandomizeBasesPlayer.grid(row = 1, column = 0, stick=W)
+LabelPlayable.checkbutton('Randomize bases', 'PlayerBases', 1, 0)
 
-textPlayerBaseRange = Label(LabelPlayable, text = 'Base Range:')
-textPlayerBaseRange.grid(row = 2, column = 0, stick=W)
+LabelPlayable.textlabel('Base Range:', 2 , 0)
 
-PlayerBasesRangeVar = IntVar()
-PlayerBasesRangeVar.set(3)
-entryBasesRange = Entry(LabelPlayable, width=5, textvariable = PlayerBasesRangeVar)
-entryBasesRange.grid(row = 2, column = 0, stick=E)
+LabelPlayable.entry('BasesRange', 5, 2, 0, 3, E)
 
-PlayerGrowthsVar = IntVar()
-checkmarkRandomizeGrowthsPlayer = Checkbutton(LabelPlayable, text = 'Randomize growths', variable = PlayerGrowthsVar)
-checkmarkRandomizeGrowthsPlayer.grid(row = 3, column = 0, stick = W)
+LabelPlayable.checkbutton('Randomize growths', 'PlayerGrowths', 3, 0)
 
-PlayerGrowthsModeVar = IntVar()
-PlayerGrowthsModeVar.set(1)
-radiobuttonGrowthsFullMode = Radiobutton(LabelPlayable, text = 'Full Mode', variable = PlayerGrowthsModeVar, value = 1)
-radiobuttonGrowthsRangeMode = Radiobutton(LabelPlayable, text = 'Range Mode', variable = PlayerGrowthsModeVar, value = 0)
-radiobuttonGrowthsFullMode.grid(row = 4, column = 0, stick = W)
-radiobuttonGrowthsRangeMode.grid(row = 5, column = 0, stick = W)
+LabelPlayable.radiobutton(['Range Mode', 'Full Mode'], 'PlayerGrowthMode', 4, 0)
 
-PlayerGrowthsRangeVar = IntVar()
-PlayerGrowthsRangeVar.set(30)
-textPlayerGrowthRange = Label(LabelPlayable, text = 'Growths Range:')
-textPlayerGrowthRange.grid(row = 6, column = 0, stick = W)
-PlayerGrowthsRange = Entry(LabelPlayable, width = 5, textvariable = PlayerGrowthsRangeVar)
-PlayerGrowthsRange.grid(row = 6, column = 0, stick = E)
+LabelPlayable.textlabel('Growths Range:', 6, 0)
+
+LabelPlayable.entry('GrowthRange', 5, 6, 0, 30, E)
 ###############
 ### Support
 ###############
-LabelSupport = LabelFrame(root, text="Support Options")
-LabelSupport.grid(row = 2, column = 0, stick=NW)
+LabelSupport = CreateLabel('Support Options', 2, 0)
 
-RandomizeSupportsVar = IntVar()
-checkmarkRandomizeSupports = Checkbutton(LabelSupport, text = 'Randomize Supports', variable = RandomizeSupportsVar)
-checkmarkRandomizeSupports.grid(row = 1, column = 0, stick = W)
+LabelSupport.checkbutton('Randomize Supports', 'Support', 1, 0)
 
-labelSupportCountMin = Label(LabelSupport, text = 'Minimum characters supported')
-labelSupportCountMin2 = Label(LabelSupport, text = 'by one character:')
-labelSupportCountMin.grid(row = 2, column = 0, stick = W)
-labelSupportCountMin2.grid(row = 3, column = 0, stick = W)
+LabelSupport.textlabel('Minimum characters supported', 2, 0)
+LabelSupport.textlabel('by one character:', 3, 0)
 
-SupportMinCountVar = IntVar()
-SupportMinCountVar.set(0)
-entrySupportMinCount = Entry(LabelSupport, width = 5, textvariable = SupportMinCountVar)
-entrySupportMinCount.grid(row = 3, column = 0, stick = E)
+LabelSupport.entry('SupportMinCount', 5, 3, 0, 0, E)
 
-labelSupportCountMax = Label(LabelSupport, text = 'Maximum characters supported')
-labelSupportCountMax2 = Label(LabelSupport, text = 'by one character:')
-labelSupportCountMax.grid(row = 4, column = 0, stick = W)
-labelSupportCountMax2.grid(row = 5, column = 0, stick = W)
+LabelSupport.textlabel('Maximum characters supported', 4, 0)
+LabelSupport.textlabel('by one character:', 5, 0)
 
-SupportMaxCountVar = IntVar()
-SupportMaxCountVar.set(3)
-entrySupportMaxCount = Entry(LabelSupport, width = 5, textvariable = SupportMaxCountVar)
-entrySupportMaxCount.grid(row = 5, column = 0, stick = E)
+LabelSupport.entry('SupportMaxCount', 5, 5, 0, 3, E)
 
-labelSupportBonusMin = Label(LabelSupport, text = 'Minimum bonus:')
-labelSupportBonusMin.grid(row = 6, column = 0, stick = W)
+LabelSupport.textlabel('Minimum bonus:', 6, 0)
 
-SupportMinBonusVar = IntVar()
-SupportMinBonusVar.set(5)
-entrySupportMinBonus = Entry(LabelSupport, width = 5, textvariable = SupportMinBonusVar)
-entrySupportMinBonus.grid(row = 6, column = 0, stick = E)
+LabelSupport.entry('SupportMinBonus', 5, 6, 0, 5, E)
 
-labelSupportBonusMax = Label(LabelSupport, text = 'Maximum bonus:')
-labelSupportBonusMax.grid(row = 7, column = 0, stick = W)
+LabelSupport.textlabel('Maximum bonus', 7, 0)
 
-SupportMaxBonusVar = IntVar()
-SupportMaxBonusVar.set(20)
-entrySupportMaxBonus = Entry(LabelSupport, width = 5, textvariable = SupportMaxBonusVar)
-entrySupportMaxBonus.grid(row = 7, column = 0, stick = E)
+LabelSupport.entry('SupportMaxBonus', 5, 7, 0, 20, E)
+##################
+#### Global Enemy
+##################
+
+LabelEnemy = CreateLabel('Global Enemies', 1, 1)
+
+LabelEnemy.checkbutton('Increase enemy bases', 'EnemyBase', 0, 0)
+
+LabelEnemy.checkbutton('Increase enemy growths', 'EnemyGrowth', 0, 1)
+
+LabelEnemy.entry('EnemyBase', 5, 1, 0, 3, E)
+LabelEnemy.textlabel('Increase bases by:', 1, 0)
+
+LabelEnemy.entry('EnemyGrowth', 5, 1, 1, 15, E)
+LabelEnemy.textlabel('Increase growths by:', 1, 1)
+
+################
+### Bosses
+################
+LabelBoss = CreateLabel('Boss options', 2, 1)
+LabelBoss.checkbutton('Randomize classes', 'BossClass', 0, 0)
+
+LabelBoss.checkbutton('Increase level', 'BossLevel', 1, 0)
+
+LabelBoss.entry('BossLevelIncrease', 5, 2, 0, 3, E)
+
+LabelBoss.textlabel('Increase by:', 2, 0)
+
+#################
+### Generics
+#################
+LabelGeneric = CreateLabel('Generic options', 2, 2)
+LabelGeneric.checkbutton('Randomize classes', 'GenericClass', 0, 0)
+
+LabelGeneric.checkbutton('Increase level', 'GenericLevel', 1, 0)
+
+LabelGeneric.entry('GenericLevelIncrease', 5, 2, 0, 4, E)
+
+LabelGeneric.textlabel('Increase by:', 2, 0)
 ##################################################################
 ########################### Functions ############################
 ##################################################################
@@ -856,11 +901,11 @@ class FinishWindow:
 		self.button.grid(row = 1, column = 0)
 		self.window.title('Finished!')
 		self.window.iconbitmap('xane.ico')
-
 	def quit(self):
 		self.window.destroy()
 		root.destroy()
 		sys.exit()
+
 def SelectFile():
 	RomLocation.set(filedialog.askopenfilename(title = "Select FE3 rom...",filetypes = [("All Files","*.*")]))
 def RandomizingProcess():
@@ -887,7 +932,6 @@ def RandomizingProcess():
 			if not '.html' in LogLocation:
 				LogLocation += '.html'
 			changelog = open(LogLocation, 'w')
-
 
 	shutil.copyfile(FileLocation, SaveLocation)
 	fe3rom = open(SaveLocation, 'rb+')
