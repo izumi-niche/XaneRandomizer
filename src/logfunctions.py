@@ -221,3 +221,56 @@ def CreatePlayableLog(changelog, fe3rom, unitlist):
 """
 		DummyString = DummyString.format(UnitData[unit]['class'], UnitData[unit]['level'], UnitData[unit]['weapon1'], UnitData[unit]['weapon2'], UnitData[unit]['weapon3'], UnitData[unit]['weapon4'], UnitData[unit]['item1'], UnitData[unit]['item2'])
 		changelog.write(DummyString)
+
+###################
+### Astral Shards
+###################
+def CreateAstralLog(changelog, fe3rom):
+	changelog = open(changelog, 'a')
+	fe3rom = open(fe3rom, 'rb')
+	names = ['Aquarius', 'Pisces', 'Aries', 'Tauros', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+	'Libra', 'Scorpio', 'Sagittarius', 'Capricorn']
+	stats = ['Strength', 'Defense', 'Skill', 'Speed', 'Luck', 'Resistance', 'HP', 'WpnLvl']
+	found = {}
+	for x in range(12):
+		found[names[x]] = {}
+		for y in range(8):
+			fe3rom.seek(AstralShardLocation + y + (x * 8))
+			HexRead = GetSignedByte(fe3rom.read(1))
+			found[names[x]][stats[y]] = HexRead
+	DummyString = """
+	<h2> Astral Shards </h2>
+	<table style="width:50%">
+	<tr>
+		<th> Name </th>
+		<th> HP </th>
+		<th> Str/Mag </th>
+		<th> Skill </th>
+		<th> Speed </th>
+		<th> Luck </th>
+		<th> WpnLv </th>
+		<th> Defense </th>
+		<th> Resistance </th>
+	</tr>
+"""
+	changelog.write(DummyString)
+	for x in found:
+		DummyString = """
+	<tr>
+		<th> {} </th>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+		<td style="text-align:center"> {}% </td>
+	</tr>
+"""
+		DummyString = DummyString.format(x, found[x]['HP'], found[x]['Strength'], found[x]['Skill'], found[x]['Speed'], found[x]['Luck'], found[x]['WpnLvl'], found[x]['Defense'], found[x]['Resistance'])
+		changelog.write(DummyString)
+	DummyString = """
+	</table>
+	"""
+	changelog.write(DummyString)

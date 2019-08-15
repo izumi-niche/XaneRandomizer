@@ -14,7 +14,7 @@ from lists.playable import *
 from lists.weaponpool import *
 
 SupportDec = 282417
-
+AstralShardLocation = 337667
 def UnitDataCalc(number):
 	return number * 17
 
@@ -66,6 +66,20 @@ def ReverseDict(olddict):
 		newdict[olddict[i]] = i
 	return newdict
 
+def SignedByte(number):
+	if number < 0:
+		number = 255 + number
+		return bytes([number])
+	else:
+		return bytes([number])
+
+def GetSignedByte(byte):
+	byte = ByteToInt(byte)
+	if byte > 127:
+		byte = (255 - byte) * -1
+		return byte 
+	else:
+		return byte
 
 ##############################################################
 ############## Item randomization functions ##################

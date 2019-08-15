@@ -59,5 +59,6 @@ GenericPortraits = [
 	'Dragon',
 	'Paladin',
 	'Horseman',
-	'Soldier2'
+	'Soldier2',
+	'Thief'
 ]

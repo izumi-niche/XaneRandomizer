@@ -67,7 +67,7 @@ def RandomizePlayableGrowths(mode, statrange):
 	print('Randomizing playable growths...')
 	FirstDec = 267265
 	# Range mode
-	if mode == 0:
+	if mode == 1:
 		for unit in PlayableUnits:
 			unit = CharacterDataList[unit]
 			UnitLocation = UnitDataCalc(unit)
@@ -84,7 +84,7 @@ def RandomizePlayableGrowths(mode, statrange):
 				fe3rom.seek(FirstDec + unit + 9 + x)
 				fe3rom.write(growth)
 	# Full mode
-	if mode == 1:
+	if mode == 0:
 		for unit in PlayableUnits:
 			unit = CharacterDataList[unit]
 			for x in range(8):
@@ -97,8 +97,11 @@ def RandomizePlayableGrowths(mode, statrange):
 
 # Randomizing playable units.
 # Will look for the character data to determine if it is a playable unit.
-def RandomizePlayableUnits():
+def RandomizePlayableUnits(thief):
 	CharacterList = GetCharacter(PlayableUnits)
+	if thief == 1:
+		for x in ['Julian', 'Julian2', 'Rickard', 'Rickard2', 'RickardE']:
+			CharacterList.remove(CharacterDataList[x])
 	UnitList = SearchForUnits()
 	UnitWrite = [] 
 	for unit in UnitList:
@@ -266,6 +269,8 @@ def IncreaseEnemyLevel(mode, levelincrease):
 		HexRead = fe3rom.read(1)
 		HexRead = ByteToInt(HexRead)
 		HexRead += levelincrease
+		if HexRead > 20:
+			HexRead = 20
 		HexRead = bytes([HexRead])
 		fe3rom.seek(unit + 2)
 		fe3rom.write(HexRead)
@@ -372,6 +377,37 @@ def BreakRapierLock():
 	SwordSteelEnemy.append('Rapier')
 	print('Done!')	
 
+def AstralShard(mode):
+	stats = [0, 0, 0, 0, 0, 0, 0, 0]
+	if mode == 1:
+		score = random.randint(20, 40)
+		split = random.randint(1, 8)
+		splitstat = score / split
+		for x in range(split):
+			stats[random.randint(0, len(stats) - 1)] += splitstat
+		for x in range(len(stats)):
+			if not stats[x] == 0:
+				if random.randint(0, 1) == 1:
+					stats[x] += random.randint(0, 4) * 5
+		for x in range(len(stats)):
+			if random.randint(0, 10) <= 2:
+				stats[x] = stats[x] * -1
+		for x in range(len(stats)):
+			stats[x] = int(stats[x])
+			stats[x] = SignedByte(stats[x])
+		return stats
+	else:
+		for x in range(len(stats)):
+			stats[x] = random.randint(-100, 100)
+			stats[x] = SignedByte(stats[x])
+		return stats
+
+def RandomizeAstralShard(mode):
+	for x in range(12):
+		stats = AstralShard(mode)
+		for y in range(8):
+			fe3rom.seek(AstralShardLocation + y + (x * 8))
+			fe3rom.write(stats[y])
 #############################################
 ############## Support Options ##############
 #############################################
@@ -722,6 +758,7 @@ def RandomizeEnemyClasses(unit):
 	Tier1.remove(22)
 	Tier1Mounted = GetClasses(MountedTier1)
 	Tier2 = GetClasses(PoolTier2)
+	Tier2.remove(15)
 	Tier2Mounted = GetClasses(MountedTier2)
 
 	# See if it is a tier 1 unit
@@ -753,19 +790,20 @@ def RandomizeEnemyClasses(unit):
 root = Tk()
 
 class CreateLabel:
-	def __init__(self, text, row, column, sticky=NW):
+	def __init__(self, text, row, column, columnspan=1, rowspan=1, sticky=NW):
 		self.label = LabelFrame(root, text= text)
-		self.label.grid(row = row, column = column, stick = sticky)
+		self.label.grid(row = row, column = column, stick = sticky, columnspan = columnspan, rowspan = rowspan)
 		self.VarList = {}
 		self.maxcolumn = 0
 		self.maxrow = 0
 
 	def check(self, varname):
-		print(self.VarList[varname].get())
+		print(str(self.VarList[varname].get()) + '' + varname)
 		return self.VarList[varname].get()
 
-	def checkbutton(self, text, varname, row, column, sticky=W):
+	def checkbutton(self, text, varname, row, column, default=0, sticky=W):
 		self.VarList[varname] = IntVar()
+		self.VarList[varname].set(default)
 		self.checkbuttonFunc = Checkbutton(self.label, text = text, variable = self.VarList[varname])
 		self.checkbuttonFunc.grid(row = row, column = column, stick=sticky)
 
@@ -801,19 +839,21 @@ LabelPlayable = CreateLabel('Playable Options', 1, 0)
 
 LabelPlayable.checkbutton('Randomize classes', 'PlayerClass', 0, 0)
 
-LabelPlayable.checkbutton('Randomize bases', 'PlayerBases', 1, 0)
+LabelPlayable.checkbutton('Ignore Julian/Rickard', 'IgnoreThief', 1, 0, 1)
 
-LabelPlayable.textlabel('Base Range:', 2 , 0)
+LabelPlayable.checkbutton('Randomize bases', 'PlayerBases', 2, 0)
 
-LabelPlayable.entry('BasesRange', 5, 2, 0, 3, E)
+LabelPlayable.textlabel('Base Range:', 3 , 0)
 
-LabelPlayable.checkbutton('Randomize growths', 'PlayerGrowths', 3, 0)
+LabelPlayable.entry('BasesRange', 5, 3, 0, 3, E)
 
-LabelPlayable.radiobutton(['Range Mode', 'Full Mode'], 'PlayerGrowthMode', 4, 0)
+LabelPlayable.checkbutton('Randomize growths', 'PlayerGrowths', 4, 0)
 
-LabelPlayable.textlabel('Growths Range:', 6, 0)
+LabelPlayable.radiobutton(['Full Mode', 'Range Mode'], 'PlayerGrowthMode', 5, 0)
 
-LabelPlayable.entry('GrowthRange', 5, 6, 0, 30, E)
+LabelPlayable.textlabel('Growths Range:', 7, 0)
+
+LabelPlayable.entry('GrowthRange', 5, 7, 0, 30, E)
 ###############
 ### Support
 ###############
@@ -848,10 +888,10 @@ LabelEnemy.checkbutton('Increase enemy bases', 'EnemyBase', 0, 0)
 
 LabelEnemy.checkbutton('Increase enemy growths', 'EnemyGrowth', 0, 1)
 
-LabelEnemy.entry('EnemyBase', 5, 1, 0, 3, E)
+LabelEnemy.entry('EnemyBaseIncrease', 5, 1, 0, 3, E)
 LabelEnemy.textlabel('Increase bases by:', 1, 0)
 
-LabelEnemy.entry('EnemyGrowth', 5, 1, 1, 15, E)
+LabelEnemy.entry('EnemyGrowthIncrease', 5, 1, 1, 15, E)
 LabelEnemy.textlabel('Increase growths by:', 1, 1)
 
 ################
@@ -877,6 +917,12 @@ LabelGeneric.checkbutton('Increase level', 'GenericLevel', 1, 0)
 LabelGeneric.entry('GenericLevelIncrease', 5, 2, 0, 4, E)
 
 LabelGeneric.textlabel('Increase by:', 2, 0)
+###############
+#### Other options
+###############
+LabelOther = CreateLabel('Other options', 2, 3)
+LabelOther.checkbutton('Randomize Astral Shard bonuses', 'AstralShard', 0, 0)
+LabelOther.radiobutton(['Full Mode', '\'Balanced\' Mode'], 'AstralShardMode', 1, 0)
 ##################################################################
 ########################### Functions ############################
 ##################################################################
@@ -940,20 +986,38 @@ def RandomizingProcess():
 ### Randomization Functions ###
 ###############################
 # Playable class randomization
-	if PlayerClassVar.get() == 1:
-		RandomizePlayableUnits()
+	if LabelPlayable.check('PlayerClass') == 1:
+		RandomizePlayableUnits(LabelPlayable.check('IgnoreThief'))
 		FixManakete('player')
 		PlayableCopyUnits()
 # Playable bases randomization
-	if PlayerBasesVar.get() == 1:
-		RandomizePlayableBases(PlayerBasesRangeVar.get())
+	if LabelPlayable.check('PlayerBases') == 1:
+		RandomizePlayableBases(LabelPlayable.check('BasesRange'))
 		PlayableCopyBases()
 # Playable growths randomization
-	if PlayerGrowthsVar.get() == 1:
-		RandomizePlayableGrowths(PlayerGrowthsModeVar.get(), PlayerGrowthsRangeVar.get())
+	if LabelPlayable.check('PlayerGrowths') == 1:
+		RandomizePlayableGrowths(LabelPlayable.check('PlayerGrowthMode'), LabelPlayable.check('GrowthRange'))
 # Support Randomization
-	if RandomizeSupportsVar.get() == 1:
-		RandomizeSupports(SupportMinCountVar.get(), SupportMaxCountVar.get(), SupportMinBonusVar.get(), SupportMaxBonusVar.get())
+	if LabelSupport.check('Support') == 1:
+		RandomizeSupports(LabelSupport.check('SupportMinCount'), LabelSupport.check('SupportMaxCount'), LabelSupport.check('SupportMinBonus'), LabelSupport.check('SupportMaxBonus'))
+# Generic unit randomization
+	if LabelGeneric.check('GenericClass') == 1:
+		RandomizeEnemyUnits()
+# Increase enemy level
+	if LabelGeneric.check('GenericLevel') == 1:
+		IncreaseEnemyLevel('enemy', LabelGeneric.check('GenericLevelIncrease'))
+# Boss unit randomization
+	if LabelBoss.check('BossClass') == 1:
+		RandomizeBossUnits()
+# Boss level increase
+	if LabelBoss.check('BossLevel') == 1:
+		IncreaseEnemyLevel('boss', LabelBoss.check('BossLevelIncrease'))
+# All enemies increase base or/and growth
+	if LabelEnemy.check('EnemyBase') == 1 or LabelEnemy.check('EnemyGrowth') == 1:
+		IncreaseEnemyStats(LabelEnemy.check('EnemyBase') , LabelEnemy.check('EnemyGrowth'), LabelEnemy.check('EnemyBaseIncrease'), LabelEnemy.check('EnemyGrowthIncrease'))
+# Astral Shards
+	if LabelOther.check('AstralShard') == 1:
+		RandomizeAstralShard(LabelOther.check('AstralShardMode'))
 ###################
 ### Log Process ###
 ###################
@@ -961,13 +1025,15 @@ def RandomizingProcess():
 	fe3rom = open(SaveLocation, 'rb+')
 	if LogVar.get() == 1:
 		CreateLogFile(LogLocation)
-		if PlayerBasesVar.get() == 1 or PlayerGrowthsVar.get() == 1 or PlayerClassVar.get() == 1:
+		if LabelPlayable.check('PlayerBases') or LabelPlayable.check('PlayerGrowths') == 1 or LabelPlayable.check('PlayerClass') == 1:
 			CreatePlayableLog(LogLocation, SaveLocation, SearchForUnits())
-		if RandomizeSupportsVar.get() == 1:
+		if LabelSupport.check('Support') == 1:
 			CreateSupportLog(LogLocation, SaveLocation)
+		if LabelOther.check('AstralShard') == 1:
+			CreateAstralLog(LogLocation, SaveLocation)
 		EndLogFile(LogLocation)
+		changelog.close()
 	fe3rom.close()
-	changelog.close()
 	try:
 		PopUpBox.quit()
 	except:
