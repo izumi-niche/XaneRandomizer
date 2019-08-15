@@ -89,6 +89,58 @@ Every single growth will be picked randomly between 5 and 100. Totally random.
 
 ##### Range Mode
 
-Every character growth will be randomized with a range. For example, if the range is set to 30, each stat will be increased by a random number from -30 to 30, so if it rolls a 15 and your stat is 20: 20 + 15 = 35%.
+Every character growth will be randomized with a range. For example, if the range is set to 30, each growth will be increased by a random number from -30 to 30, so if it rolls a 15 and your growth is 20: 20 + 15 = 35%.
 
 The range can be changed, for default it is 30.
+
+### Global Enemy Options
+
+As the name says, this option will effect ALL enemies, bosses or generic.
+
+##### Increase enemy bases
+
+Increase enemy bases by a X ammount. Default is 3.
+
+##### Increae enemy growths
+
+Increase enemy growths by a X ammount. Default is 15.
+
+### Generic/Boss options
+
+Applies for both the Generic Options and Boss Options, since they do the same thing but for different enemies.
+
+#### Randomize classes
+
+Randomize classes for generic/boss units.
+
+#### Increase level
+
+Level will be increased by X for generic/boss units. Increasing the level will also increase their stats.
+
+### Support Options
+
+Randomize supports between playable characters.
+
+Options are pretty much self-explanatory.
+
+Minimum characters supported by one character: Default is 0
+
+Maximum characters supported by one character: Default is 3
+
+Minimum bonus: Default is 5
+
+Maximum bonus: Default is 20
+
+### Other options
+
+#### Randomoize Astral Shard bonuses
+
+Randomize the growths that the Astral Shards gives when in inventory.
+
+#### Full Mode
+
+The growths are totally random and each growth is a random number varrying from -100 and 100. Pretty much garanted to make things totally busted or totally crap.
+
+#### 'Balanced' Mode
+
+The growths will be randomized trying to be more 'balanced'. Not guarranted to be a totally balanced experience, since there still a bit of 'random' on it.
