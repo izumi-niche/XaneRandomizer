@@ -103,6 +103,8 @@ def RandomizePlayableUnits(thief):
 	if thief == 1:
 		for x in ['Julian', 'Julian2', 'Rickard', 'Rickard2', 'RickardE']:
 			CharacterList.remove(CharacterDataList[x])
+	for x in ['Xane', 'Xane2']:
+		CharacterList.remove(CharacterDataList[x])
 	UnitList = SearchForUnits()
 	UnitWrite = [] 
 	for unit in UnitList:
