@@ -69,10 +69,10 @@ def RandomizePlayableGrowths(mode, statrange):
 	# Range mode
 	if mode == 1:
 		for unit in PlayableUnits:
-			unit = CharacterDataList[unit]
-			UnitLocation = UnitDataCalc(unit)
+			y = CharacterDataList[unit]
+			y = UnitDataCalc(y)
 			for x in range(8):
-				fe3rom.seek(FirstDec + unit + 9 + x)
+				fe3rom.seek(FirstDec + y + 9 + x)
 				growth = fe3rom.read(1)
 				growth = ByteToInt(growth)
 				growth = growth + random.randint(statrange * -1, statrange)
@@ -81,17 +81,18 @@ def RandomizePlayableGrowths(mode, statrange):
 				elif growth > 100:
 					growth = 100
 				growth = bytes([growth])
-				fe3rom.seek(FirstDec + unit + 9 + x)
+				fe3rom.seek(FirstDec + y + 9 + x)
 				fe3rom.write(growth)
 	# Full mode
 	if mode == 0:
 		for unit in PlayableUnits:
-			unit = CharacterDataList[unit]
+			y = CharacterDataList[unit]
+			y = UnitDataCalc(y)
 			for x in range(8):
 				growth = random.randint(1, 20)
 				growth = growth * 5
 				growth = bytes([growth])
-				fe3rom.seek(FirstDec + unit + 9 + x)
+				fe3rom.seek(FirstDec + y + 9 + x)
 				fe3rom.write(growth)
 	print('Done!')
 
@@ -159,7 +160,7 @@ def FixManakete(manakete):
 		ManaketeList.append(CharacterDataList['Tiki'])
 		NewDragonStone = bytes([items['Divinestone']])
 	else:
-		for x in ['Xemcel', 'Khozel', 'Morzas', 'Xemcel']:
+		for x in ['Xemcel', 'Khozel', 'Morzas']:
 			ManaketePortrait.append(PortraitList[x])
 		NewDragonStone = bytes([items['FireStone']])
 	UnitList = SearchForUnits()
@@ -547,7 +548,6 @@ def SearchForUnits():
 ############################
 
 def GiveWeapons(unit, mode):
-	
 	# Get inventory items
 	InventoryItems = GetItems(AllItems)
 
@@ -798,7 +798,6 @@ class CreateLabel:
 		self.maxrow = 0
 
 	def check(self, varname):
-		print(str(self.VarList[varname].get()) + '' + varname)
 		return self.VarList[varname].get()
 
 	def checkbutton(self, text, varname, row, column, default=0, sticky=W):
@@ -992,6 +991,7 @@ def RandomizingProcess():
 		PlayableCopyUnits()
 # Playable bases randomization
 	if LabelPlayable.check('PlayerBases') == 1:
+		print(LabelPlayable.check('BasesRange'))
 		RandomizePlayableBases(LabelPlayable.check('BasesRange'))
 		PlayableCopyBases()
 # Playable growths randomization

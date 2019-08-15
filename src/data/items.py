@@ -106,7 +106,7 @@ items = {
 	'Guiding Ring': 104,
 	'Elysian Whip': 105,
 	'Orion\'s Bolt': 106,
-	'Earth Orb': 107,
+	'Earth Orb2': 107,
 	'Life Orb': 108,
 	'Iote Shield': 109,
 	'Aquarius Orb': 110,
