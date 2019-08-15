@@ -187,13 +187,17 @@ def FixManakete(manakete):
 ###########################################
 # Randomizing enemy units.
 # Will look for portraits to determine if it is a enemy unit.
-def RandomizeEnemyUnits():
+def RandomizeEnemyUnits(thief):
 	EnemyList = GetPortraits(GenericPortraits)
 	UnitList = SearchForUnits()
 	UnitWrite = []
 	for unit in UnitList:
 		if UnitList[unit]['portrait'] in EnemyList:
-			UnitWrite.append(unit)
+			if thief == 0:
+				UnitWrite.append(unit)
+			if thief == 1:
+				if not UnitList[unit]['item1'] in GetItems(ImportantItems):
+					UnitWrite.append(unit)
 	# Write
 	for unit in UnitWrite:
 		RandomizeEnemyClasses(unit)
@@ -911,11 +915,13 @@ LabelBoss.textlabel('Increase by:', 2, 0)
 LabelGeneric = CreateLabel('Generic options', 2, 2)
 LabelGeneric.checkbutton('Randomize classes', 'GenericClass', 0, 0)
 
-LabelGeneric.checkbutton('Increase level', 'GenericLevel', 1, 0)
+LabelGeneric.checkbutton('Ignore thiefs with sphere/orbs', 'ThiefShard', 1, 0)
 
-LabelGeneric.entry('GenericLevelIncrease', 5, 2, 0, 4, E)
+LabelGeneric.checkbutton('Increase level', 'GenericLevel', 2, 0)
 
-LabelGeneric.textlabel('Increase by:', 2, 0)
+LabelGeneric.entry('GenericLevelIncrease', 5, 3, 0, 4, E)
+
+LabelGeneric.textlabel('Increase by:', 3, 0)
 ###############
 #### Other options
 ###############
@@ -1002,7 +1008,7 @@ def RandomizingProcess():
 		RandomizeSupports(LabelSupport.check('SupportMinCount'), LabelSupport.check('SupportMaxCount'), LabelSupport.check('SupportMinBonus'), LabelSupport.check('SupportMaxBonus'))
 # Generic unit randomization
 	if LabelGeneric.check('GenericClass') == 1:
-		RandomizeEnemyUnits()
+		RandomizeEnemyUnits(LabelGeneric.check('ThiefShard'))
 # Increase enemy level
 	if LabelGeneric.check('GenericLevel') == 1:
 		IncreaseEnemyLevel('enemy', LabelGeneric.check('GenericLevelIncrease'))

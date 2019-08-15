@@ -60,6 +60,19 @@ Compatible translations patches:
 *Generic enemy randomized into a pegasus in a 1.1 ROM with Quirino's patch*
 
 ## Options
+## Important!
+
+Since FE3 is not that popular (well, almost nobody played it) in the english community, understanding how FE3 works is a bit... scarce. Not to mention that it has it's fair share of woke coding, so the randomizer will do some stuff to prevent the game from exploding.
+
+Book 1 Tiki, the manakete bosses (Xemcel, Khorzas and Morzas) will always transform in a cutscene at the start of the map even if they are not a manakete. Good news is that they can change classes, but they NEED a dragonstone on the first weapon slot or the game softlocks. If you give the dragonstone and change their class, the transforming animation will be a bit weird, but it doesn't softlock! Tiki will transform to a divine dragon even if she is not a manakete, but when Bantu recruits her she will go back to the class she has randomized in (and with a free dragonstone from her inventory)! Sadly for the bosses they will transform into a dragon and will only show up with their randomized class in battle prepations.
+
+If you choose the option to remove the lock from the Rapier, every sword class can use it. But your in-battle animation will be just be Marth standing still and mentally damaging the enemy. Well, the rapier still works but the animation will be weird. The map animation will still work without problems.
+
+In vanilla FE3, Dancers can use the Rapier and the Falchion! But, Feena is hard-coded to not use to Falchion. So if you choose to break the Falchion's lock, sadly, Feena cannot use that weapon under any class. Everyone can use but the animation will be a bit weird.
+
+From the start of this randomizer i'm trying to get a way to enemy-only classes (Emperor, Ice Dragon etc) to work in all maps. Sadly, it is still not possible :( . All enemies and playable characters will randomized into classes that works in all maps (all playable classes, and Soldier). Sorry to say this, but Wyvern Gordin is still a dream.
+
+Even thought the name is *Xane* Randomizer, Xane cannot be randomized and the freelancer class doesn't work properly on other people! The transforming mechanic can be used with the freelancer class, but to turn back to normal is hard-coded to be locked to Xane. So pretty much if anyone is a freelancer and transform, they will be stuck forever as that character, even completing the chapter does not reset that. Also, due to the hard-coded thing, Xane will "untransform" even when he is not a freelancer at the end of the chapter, bringing him to 0 stats in everything and changing his class to Lord.
 ### Playable characters
 #### Randomize classes
 
@@ -97,17 +110,17 @@ The range can be changed, for default it is 30.
 
 As the name says, this option will effect ALL enemies, bosses or generic.
 
-##### Increase enemy bases
+#### Increase enemy bases
 
 Increase enemy bases by a X ammount. Default is 3.
 
-##### Increae enemy growths
+#### Increae enemy growths
 
 Increase enemy growths by a X ammount. Default is 15.
 
 ### Generic/Boss options
 
-Applies for both the Generic Options and Boss Options, since they do the same thing but for different enemies.
+Applies for both the Generic Options and Boss Options, since they do the same thing but for different enemies. Except for one what is generic-only.
 
 #### Randomize classes
 
@@ -117,25 +130,33 @@ Randomize classes for generic/boss units.
 
 Level will be increased by X for generic/boss units. Increasing the level will also increase their stats.
 
+#### Ignore thiefs with sphere/orbs
+
+Thiefs that carry a sphere or orb will not have their classes randomized. Good for preventing getting into a situation that the player can't catch them.
+
+Recommended.
+
 ### Support Options
 
 Randomize supports between playable characters.
 
 Options are pretty much self-explanatory.
 
-Minimum characters supported by one character: Default is 0
+Minimum characters supported by one character: Default is 0;
 
-Maximum characters supported by one character: Default is 3
+Maximum characters supported by one character: Default is 3;
 
-Minimum bonus: Default is 5
+Minimum bonus: Default is 5;
 
-Maximum bonus: Default is 20
+Maximum bonus: Default is 20.
 
 ### Other options
 
-#### Randomoize Astral Shard bonuses
+#### Randomize Astral Shard bonuses
 
 Randomize the growths that the Astral Shards gives when in inventory.
+
+NOTE: Does not affect the Starsphare/Star Orb.
 
 #### Full Mode
 
@@ -143,4 +164,28 @@ The growths are totally random and each growth is a random number varrying from 
 
 #### 'Balanced' Mode
 
-The growths will be randomized trying to be more 'balanced'. Not guarranted to be a totally balanced experience, since there still a bit of 'random' on it.
+The growths will be randomized trying to be more 'balanced'. Not guarranted to be a totally balanced experience, since there is still a bit of 'random' on it.
+
+#### Randomized weapons
+
+Weapon stats will be randomized, with the exception of WpnLevel.
+
+#### Randomize shops
+
+Shops will be randomized to have random contents.
+
+## Log 
+
+You can choose to create a log that will tell what changed in your ROM.
+
+It contains, if that options is enabled in the randomization:
+
+Playable characters stats, items and class;
+
+Supports;
+
+Astral Shard bonuses;
+
+Weapon stats;
+
+Shop content.
