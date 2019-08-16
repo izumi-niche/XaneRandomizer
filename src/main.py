@@ -992,7 +992,7 @@ LabelBoss.textlabel('Increase by:', 2, 0)
 LabelBoss.checkbutton('Randomize items', 'BossItem', 3, 0)
 
 LabelBoss.textlabel('Item chance:', 4, 0)
-LabelBoss.entry('ItemChance', 5, 4, 0, 10, E)
+LabelBoss.entry('ItemChance', 5, 4, 0, 20, E)
 #################
 ### Generics
 #################
@@ -1009,7 +1009,7 @@ LabelGeneric.textlabel('Increase by:', 3, 0)
 
 LabelGeneric.checkbutton('Randomize items', 'GenericItem', 4, 0)
 LabelGeneric.textlabel('Item chance:', 5, 0)
-LabelGeneric.entry('ItemChance', 5, 5, 0, 10, E)
+LabelGeneric.entry('ItemChance', 5, 5, 0, 20, E)
 ###############
 #### Other options
 ###############

@@ -14,8 +14,7 @@ All things need to be done to version v1.0
 - [x] Increase enemy level
 - [x] Increase boss level
 - [x] Increase bases and growths
-- [ ] Minimum weapon rank for enemy or bosses
-- [ ] Chance to add a dropable item
+- [x] Chance to add a dropable item
 
 - [x] Support Randomization
 
@@ -23,10 +22,10 @@ All things need to be done to version v1.0
 - [x] Break Weapons Locks
 - [x] Astral Shard Randomization
 - [x] 0% growths
-- [ ] Shop randomization
+- [x] Shop randomization
 
-- [ ] Add the options to the GUI
-- [ ] Complete the goddamn readme
+- [x] Add the options to the GUI
+- [x] Complete the goddamn readme
 
 ## Code
 This is my first project, which as expected, the code is a bit messy more than I care to admit. I may rewrite
@@ -75,6 +74,8 @@ In vanilla FE3, the dancer class can use the Falchion, but Feena is hardcoded to
 From the start of this randomizer i'm trying to get a way to enemy-only classes (Emperor, Ice Dragon etc) to work in all maps. Sadly, it is still not possible :( . All enemies and playable characters will randomized into classes that works in all maps (all playable classes, and Soldier). Sorry to say this, but Wyvern Gordin is still a dream.
 
 Even thought the name is *Xane* Randomizer, Xane cannot be randomized and the freelancer class doesn't work properly on other people! The transforming mechanic can be used with the freelancer class, but to turn back to normal is hard-coded to be locked to Xane. So pretty much if anyone is a freelancer and transform, they will be stuck forever as that character, even completing the chapter does not reset that. Also, due to the hard-coded thing, Xane will "untransform" even when he is not a freelancer at the end of the chapter, bringing him to 0 stats in everything and changing his class to Lord.
+
+Ballistician are ignored since their AI causes to them in every class use their weapon as a siege weapon, and some animations cause a softlock.
 ### Playable characters
 #### Randomize classes
 
@@ -134,9 +135,9 @@ Level will be increased by X for generic/boss units. Increasing the level will a
 
 #### Minimum weapon level
 
-All enemies/bosses will have a minimum weapon level. Tier 1 being based around iron, Tier 2 around steel, Tier 3 around silver and Tier 4 around legendary weapons like the Gradivus.
+Generic/bosses will have a random chance of getting a droppable item.
 
-In case of axes, the Devil Axe is considered a Tier 4 for enemies since they can't trigger the devil effect.
+Default is 20%, even though it seems low, it is rolled for every generic/boss.
 
 #### Ignore thiefs with sphere/orbs
 
@@ -212,6 +213,4 @@ Playable characters stats, items and class;
 
 Supports;
 
-Astral Shard bonuses;
-
-Shop content.
+Astral Shard bonuses.
