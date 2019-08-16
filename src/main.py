@@ -23,8 +23,8 @@ from tkinter import *
 from tkinter import filedialog
 
 
-fe3rom = open('dummy.deleteme', 'w')
-changelog = open('dummy.deleteme', 'w')
+fe3rom = ''
+changelog ='' 
 
 def ReadHex(location):
 	fe3rom.seek(location)
@@ -103,13 +103,17 @@ def RandomizePlayableUnits(thief):
 	if thief == 1:
 		for x in ['Julian', 'Julian2', 'Rickard', 'Rickard2', 'RickardE']:
 			CharacterList.remove(CharacterDataList[x])
-	for x in ['Xane', 'Xane2']:
+	for x in ['Xane', 'Xane2', 'Marth2']:
 		CharacterList.remove(CharacterDataList[x])
 	UnitList = SearchForUnits()
 	UnitWrite = [] 
 	for unit in UnitList:
 		if UnitList[unit]['character'] in CharacterList:
 			UnitWrite.append(unit)
+	# Marth only class randomization
+	Marth = 264766
+	RandomClassMarth(Marth)
+	GiveWeapons(Marth, 'player')
 	# Write
 	for unit in UnitWrite:
 		RandomizePlayableClasses(unit)
@@ -195,11 +199,12 @@ def RandomizeEnemyUnits(thief):
 	UnitWrite = []
 	for unit in UnitList:
 		if UnitList[unit]['portrait'] in EnemyList:
-			if thief == 0:
-				UnitWrite.append(unit)
-			if thief == 1:
-				if not UnitList[unit]['item1'] in GetItems(ImportantItems):
+			if not UnitList[unit]['class'] == 35:
+				if thief == 0:
 					UnitWrite.append(unit)
+				if thief == 1:
+					if not UnitList[unit]['item1'] in GetItems(ImportantItems):
+						UnitWrite.append(unit)
 	# Write
 	for unit in UnitWrite:
 		RandomizeEnemyClasses(unit)
@@ -213,7 +218,8 @@ def RandomizeBossUnits():
 	UnitWrite = []
 	for unit in UnitList:
 		if UnitList[unit]['portrait'] in BossList:
-			UnitWrite.append(unit)
+			if not UnitList[unit]['class'] == 35:
+				UnitWrite.append(unit)
 	# Write
 	for unit in UnitWrite:
 		RandomizeEnemyClasses(unit)
@@ -281,6 +287,29 @@ def IncreaseEnemyLevel(mode, levelincrease):
 		HexRead = bytes([HexRead])
 		fe3rom.seek(unit + 2)
 		fe3rom.write(HexRead)
+
+# Give enemy items
+def EnemyItem(mode, itemchance):
+	UnitList = SearchForUnits()
+	ItemList = GetItems(ShopItems) 
+	EnemyList = []
+	if mode == 'enemy':
+		EnemyList = GetPortraits(GenericPortraits)
+	elif mode == 'boss':
+		EnemyList = GetPortraits(BossPortraits)
+	EnemyData = {}
+	for unit in UnitList:
+		if UnitList[unit]['portrait'] in EnemyList:
+			if UnitList[unit]['item1'] == 255:
+				EnemyData[unit] = 0
+			elif UnitList[unit]['item2'] == 255:
+				EnemyData[unit] = 1
+	for unit in EnemyData:
+		if random.randint(0, 100) <= itemchance:
+			newitem = ItemList[random.randint(0, len(ItemList) - 1)]
+			fe3rom.seek(unit + 12 + EnemyData[unit])
+			fe3rom.write(bytes([newitem]))
+
 ###########################################
 ############## Other Options ##############
 ###########################################
@@ -427,6 +456,31 @@ def NoGrowths():
 			growth = bytes([growth])
 			fe3rom.seek(FirstDec + y + 9 + x)
 			fe3rom.write(growth)
+
+def RandomizeShops():
+	ShopLocation = 397892
+	ItemList = GetItems(ShopItems)
+	ShopList = {}
+	for x in range(39):
+		itemscount = random.randint(1, 7)
+		ShopList[x] = []
+		# Add the items
+		for y in range(itemscount):
+			while True:
+				NewItem = ItemList[random.randint(0, len(ItemList) - 1)]
+				if not NewItem in ShopList[x]:
+					ShopList[x].append(NewItem)
+					break
+		# Fill the rest of shop list with 'Nothing'
+		for y in range(7 - itemscount):
+			ShopList[x].append(254)
+		# Separator
+		ShopList[x].append(254)
+	for shop in ShopList:
+		for x in range(len(ShopList[shop])):
+			fe3rom.seek(ShopLocation + (shop * 8) + x)
+			fe3rom.write(bytes([ShopList[shop][x]]))
+
 #############################################
 ############## Support Options ##############
 #############################################
@@ -502,7 +556,10 @@ def SearchForUnits():
 	'weapon3': 10,
 	'weapon4': 11,
 	'item1': 12,
-	'item2': 13
+	'item2': 13,
+	'ai1': 16,
+	'ai2': 17,
+	'ai3': 18
 	}
 	for chapter in chapterunits:
 		if chapterunits[chapter]['type'] == 'table':
@@ -768,6 +825,15 @@ def RandomizePlayableClasses(unit):
 	fe3rom.seek(unit + 1)
 	fe3rom.write(NewClass)
 
+# Marth book 2 only randomization
+def RandomClassMarth(unit):
+	# Set class lists
+	Tier1 = GetClasses(['Lord', 'Cavalier', 'Pegasus Knight', 'Hunter', 'Mage M', 'Mage F', 'Dancer', 'Thief'])
+	NewClass = Tier1[random.randint(0, len(Tier1) - 1)]
+	NewClass = bytes([NewClass])
+	fe3rom.seek(unit + 1)
+	fe3rom.write(NewClass)
+
 # Randomize classes for enemy characters
 def RandomizeEnemyClasses(unit):
 	# Set class lists
@@ -852,11 +918,11 @@ class CreateLabel:
 ###############
 ### Playable
 ###############
-LabelPlayable = CreateLabel('Playable Options', 1, 0)
+LabelPlayable = CreateLabel('Playable Options', 1, 0, 1, 2)
 
 LabelPlayable.checkbutton('Randomize classes', 'PlayerClass', 0, 0)
 
-LabelPlayable.checkbutton('Ignore Julian/Rickard', 'IgnoreThief', 1, 0, 1)
+LabelPlayable.checkbutton('Ignore Julian and Rickard', 'IgnoreThief', 1, 0, 1)
 
 LabelPlayable.checkbutton('Randomize bases', 'PlayerBases', 2, 0)
 
@@ -874,7 +940,7 @@ LabelPlayable.entry('GrowthRange', 5, 7, 0, 30, E)
 ###############
 ### Support
 ###############
-LabelSupport = CreateLabel('Support Options', 2, 0)
+LabelSupport = CreateLabel('Support Options', 3, 0)
 
 LabelSupport.checkbutton('Randomize Supports', 'Support', 1, 0)
 
@@ -899,7 +965,7 @@ LabelSupport.entry('SupportMaxBonus', 5, 7, 0, 20, E)
 #### Global Enemy
 ##################
 
-LabelEnemy = CreateLabel('Global Enemies', 1, 1)
+LabelEnemy = CreateLabel('Global Enemies', 1, 1, 2)
 
 LabelEnemy.checkbutton('Increase enemy bases', 'EnemyBase', 0, 0)
 
@@ -923,6 +989,10 @@ LabelBoss.entry('BossLevelIncrease', 5, 2, 0, 3, E)
 
 LabelBoss.textlabel('Increase by:', 2, 0)
 
+LabelBoss.checkbutton('Randomize items', 'BossItem', 3, 0)
+
+LabelBoss.textlabel('Item chance:', 4, 0)
+LabelBoss.entry('ItemChance', 5, 4, 0, 10, E)
 #################
 ### Generics
 #################
@@ -936,10 +1006,14 @@ LabelGeneric.checkbutton('Increase level', 'GenericLevel', 2, 0)
 LabelGeneric.entry('GenericLevelIncrease', 5, 3, 0, 4, E)
 
 LabelGeneric.textlabel('Increase by:', 3, 0)
+
+LabelGeneric.checkbutton('Randomize items', 'GenericItem', 4, 0)
+LabelGeneric.textlabel('Item chance:', 5, 0)
+LabelGeneric.entry('ItemChance', 5, 5, 0, 10, E)
 ###############
 #### Other options
 ###############
-LabelOther = CreateLabel('Other options', 2, 3)
+LabelOther = CreateLabel('Other options', 1, 3, 1, 2)
 LabelOther.checkbutton('Randomize Astral Shard bonuses', 'AstralShard', 0, 0)
 LabelOther.radiobutton(['Full Mode', '\'Balanced\' Mode'], 'AstralShardMode', 1, 0)
 
@@ -949,6 +1023,8 @@ LabelOther.checkbutton('Remove Rapier Lock', 'RapierLock', 4, 0)
 LabelOther.checkbutton('Randomize weapons', 'RandomWeapon', 5, 0)
 
 LabelOther.checkbutton('0% growths', '0growths', 6, 0)
+
+LabelOther.checkbutton('Randomize shops', 'Shop', 7, 0)
 ##################################################################
 ########################### Functions ############################
 ##################################################################
@@ -959,7 +1035,7 @@ class BasicWindow:
 		self.button = Button(self.window, text = 'Ok', command = self.quit)
 		self.label.grid(row = 0, column = 0)
 		self.button.grid(row = 1, column = 0)
-		self.window.title('!')
+		self.window.title('Randomizing...')
 		self.window.iconbitmap('xane.ico')
 	def quit(self):
 		self.window.destroy()
@@ -1005,8 +1081,10 @@ def RandomizingProcess():
 				LogLocation += '.html'
 			changelog = open(LogLocation, 'w')
 
+
 	shutil.copyfile(FileLocation, SaveLocation)
 	fe3rom = open(SaveLocation, 'rb+')
+	print(SearchForUnits())
 	PopUpBox = BasicWindow('The ROM is now being randomized! Please, wait a bit.')
 ###############################
 ### Randomization Functions ###
@@ -1033,12 +1111,18 @@ def RandomizingProcess():
 # Increase enemy level
 	if LabelGeneric.check('GenericLevel') == 1:
 		IncreaseEnemyLevel('enemy', LabelGeneric.check('GenericLevelIncrease'))
+# Randomize generic items
+	if LabelGeneric.check('GenericItem') == 1:
+		EnemyItem('enemy', LabelBoss.check('ItemChance'))
 # Boss unit randomization
 	if LabelBoss.check('BossClass') == 1:
 		RandomizeBossUnits()
 # Boss level increase
 	if LabelBoss.check('BossLevel') == 1:
 		IncreaseEnemyLevel('boss', LabelBoss.check('BossLevelIncrease'))
+# Randomize boss items
+	if LabelBoss.check('BossItem') == 1:
+		EnemyItem('boss', LabelBoss.check('ItemChance'))
 # All enemies increase base or/and growth
 	if LabelEnemy.check('EnemyBase') == 1 or LabelEnemy.check('EnemyGrowth') == 1:
 		IncreaseEnemyStats(LabelEnemy.check('EnemyBase') , LabelEnemy.check('EnemyGrowth'), LabelEnemy.check('EnemyBaseIncrease'), LabelEnemy.check('EnemyGrowthIncrease'))
@@ -1057,6 +1141,9 @@ def RandomizingProcess():
 # 0 growths
 	if LabelOther.check('0growths') == 1:
 		NoGrowths()
+# Shop Randomization
+	if LabelOther.check('Shop') == 1:
+		RandomizeShops()
 ###################
 ### Log Process ###
 ###################
@@ -1085,17 +1172,17 @@ def RandomizingProcess():
 RomLocation = StringVar()
 LogVar = IntVar()
 
-buttonOpenFile = Button(root, text='Select FE3 rom...', command = SelectFile)
-buttonOpenFile.grid(row = 0, column = 1, stick=W)
+buttonOpenFile = Button(root, text='Select FE3 rom...', command = SelectFile, width=50)
+buttonOpenFile.grid(row = 0, column = 1, columnspan = 4)
 
 checkmarkCreateLog = Checkbutton(root, text = 'Create Log', variable = LogVar)
 checkmarkCreateLog.grid(row = 0, column = 0, stick=E)
 
 labelReadme = Label(root, text = 'For more information on the options or a fix to possible user errors, please read the Readme.')
-labelReadme.grid(row = 3, columnspan = 3, column = 0)
+labelReadme.grid(row = 4, columnspan = 4, column = 0, sticky=N)
 
 buttonRandomize = Button(root, text='Randomize!', width = 50, command = RandomizingProcess)
-buttonRandomize.grid(row = 4, columnspan = 3, column = 0)
+buttonRandomize.grid(row = 5, columnspan = 4, column = 0, sticky=N)
 
 root.title('Xane Randomizer: A FE3 Randomizer')
 root.iconbitmap('xane.ico')

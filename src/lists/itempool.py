@@ -44,33 +44,6 @@ AllItems = [
 	'Light Orb',
 	'Star Orb'
 ]
-GenericItems = [
-	'Vulnerary',
-	'Door Key',
-	'Bridge Key',
-	'Chest Key',
-	'Pure Water'
-]
-
-StatboosterItems = [
-	'Power Ring',
-	'Dragon Shield',
-	'Secret Book',
-	'Speed Ring',
-	'Talisman',
-	'Angelic Robe',
-	'Goddess Icon',
-	'Manual',
-	'Boots'
-]
-
-PromoItems = [
-	'Knight Crest',
-	'Hero Crest',
-	'Guiding Ring',
-	'Elysian Whip',
-	'Orion\'s Bolt'
-]
 ImportantItems = [
 	'Earth Orb',
 	'Earth Orb2',
@@ -157,4 +130,71 @@ WeaponItems = [
 	'Nosferatu',
 	'Meteor',
 	'Swarm'
+]
+ShopItems = [
+	'Iron Sword',
+	'Steel Sword',
+	'Silver Sword',
+	'Killing Edge',
+	'Devil Sword',
+	'Master Sword',
+	'Levin Sword',
+	'Armorslayer',
+	'Wyrmslayer',
+	'Sword Killer',
+	'Iron Lance',
+	'Steel Lance',
+	'Silver Lance',
+	'Horseslayer',
+	'Javelin',
+	'Killer Lance',
+	'Slim Lance',
+	'Iron Bow',
+	'Steel Bow',
+	'Silver Bow',
+	'Killer Bow',
+	'Iron Axe',
+	'Steel Axe',
+	'Hand Axe',
+	'Silver Axe',
+	'Devil Axe',
+	'Fire',
+	'Thunder',
+	'Blizzard',
+	'Shaver',
+	'Elfire',
+	'Thoron',
+	'Bolganone',
+	'Nosferatu',
+	'Rapier',
+	'Heal',
+	'Recover',
+	'Physic',
+	'Mend',
+	'Warp',
+	'Barrier',
+	'Fortify',
+	'Rescue',
+	'Thief',
+	'Anew',
+	'Firestone',
+	'Vulnerary',
+	'Door Key',
+	'Bridge Key',
+	'Chest Key',
+	'Power Ring',
+	'Dragon Shield',
+	'Secret Book',
+	'Speed Ring',
+	'Talisman',
+	'Angelic Robe',
+	'Goddess Icon',
+	'Manual',
+	'Boots',
+	'Pure Water',
+	'Knight Crest',
+	'Hero Crest',
+	'Guiding Ring',
+	'Elysian Whip',
+	'Orion\'s Bolt'
 ]
