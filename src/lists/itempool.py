@@ -104,7 +104,7 @@ WeaponItems = [
 	'Steel Sword',
 	'Silver Sword',
 	'Rapier',
-	'Killer Sword',
+	'Killing Edge',
 	'Devil Sword',
 	'Master Sword',
 	'Lady Sword',

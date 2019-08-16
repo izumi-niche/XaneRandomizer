@@ -306,18 +306,18 @@ def RandomizeWeapons():
 	for weapon in WeaponList:
 		WeaponPosition = ItemDataCalc(weapon)
 		# Randomize Might
-		NewMight = random.randint(0, 15)
+		NewMight = random.randint(5, 15)
 		NewMight = bytes([NewMight])
 		fe3rom.seek(FirstDec + WeaponPosition + 3)
 		fe3rom.write(NewMight)
 		# Randomize Hitrate
 		NewHit = random.randint(10, 20)
-		NewHit = bytes([NewHit])
+		NewHit = bytes([NewHit * 5])
 		fe3rom.seek(FirstDec + WeaponPosition + 4)
 		fe3rom.write(NewHit)
 		# Randomize Crit
 		NewCrit = random.randint(0, 10)
-		NewCrit = bytes([NewCrit])
+		NewCrit = bytes([NewCrit * 5])
 		fe3rom.seek(FirstDec + WeaponPosition + 5)
 		fe3rom.write(NewCrit)
 		# Randomize Weight
@@ -365,7 +365,6 @@ def BreakWeaponLocks():
 	MagicSilver.append('Excalibur')
 	MagicSilver.append('Aura')
 	MagicSilverEnemy.append('Excalibur')
-	MagicSilver.append('Aura')
 	StaveSilver.append('Rescue')
 	StaveSteel.append('Thief')
 	StaveLegendary.append('Aum')
@@ -384,6 +383,7 @@ def BreakRapierLock():
 	SwordSteelEnemy.append('Rapier')
 	print('Done!')	
 
+# Astral Shards randomization
 def AstralShard(mode):
 	stats = [0, 0, 0, 0, 0, 0, 0, 0]
 	if mode == 1:
@@ -415,6 +415,18 @@ def RandomizeAstralShard(mode):
 		for y in range(8):
 			fe3rom.seek(AstralShardLocation + y + (x * 8))
 			fe3rom.write(stats[y])
+
+# 0 growths
+def NoGrowths():
+	FirstDec = 267265
+	for unit in PlayableUnits:
+		y = CharacterDataList[unit]
+		y = UnitDataCalc(y)
+		for x in range(8):
+			growth = 0
+			growth = bytes([growth])
+			fe3rom.seek(FirstDec + y + 9 + x)
+			fe3rom.write(growth)
 #############################################
 ############## Support Options ##############
 #############################################
@@ -902,7 +914,7 @@ LabelEnemy.textlabel('Increase growths by:', 1, 1)
 ################
 ### Bosses
 ################
-LabelBoss = CreateLabel('Boss options', 2, 1)
+LabelBoss = CreateLabel('Boss options', 2, 2)
 LabelBoss.checkbutton('Randomize classes', 'BossClass', 0, 0)
 
 LabelBoss.checkbutton('Increase level', 'BossLevel', 1, 0)
@@ -914,7 +926,7 @@ LabelBoss.textlabel('Increase by:', 2, 0)
 #################
 ### Generics
 #################
-LabelGeneric = CreateLabel('Generic options', 2, 2)
+LabelGeneric = CreateLabel('Generic options', 2, 1)
 LabelGeneric.checkbutton('Randomize classes', 'GenericClass', 0, 0)
 
 LabelGeneric.checkbutton('Ignore thiefs with sphere/orbs', 'ThiefShard', 1, 0)
@@ -930,6 +942,13 @@ LabelGeneric.textlabel('Increase by:', 3, 0)
 LabelOther = CreateLabel('Other options', 2, 3)
 LabelOther.checkbutton('Randomize Astral Shard bonuses', 'AstralShard', 0, 0)
 LabelOther.radiobutton(['Full Mode', '\'Balanced\' Mode'], 'AstralShardMode', 1, 0)
+
+LabelOther.checkbutton('Remove weapon lock restrictions', 'WeaponLock', 3, 0)
+LabelOther.checkbutton('Remove Rapier Lock', 'RapierLock', 4, 0)
+
+LabelOther.checkbutton('Randomize weapons', 'RandomWeapon', 5, 0)
+
+LabelOther.checkbutton('0% growths', '0growths', 6, 0)
 ##################################################################
 ########################### Functions ############################
 ##################################################################
@@ -1026,6 +1045,18 @@ def RandomizingProcess():
 # Astral Shards
 	if LabelOther.check('AstralShard') == 1:
 		RandomizeAstralShard(LabelOther.check('AstralShardMode'))
+# Break Weapon Locks
+	if LabelOther.check('WeaponLock') == 1:
+		BreakWeaponLocks()
+# Break Rapier lock
+	if LabelOther.check('RapierLock') == 1:
+		BreakRapierLock()
+# Weapon stats
+	if LabelOther.check('RandomWeapon') == 1:
+		RandomizeWeapons()
+# 0 growths
+	if LabelOther.check('0growths') == 1:
+		NoGrowths()
 ###################
 ### Log Process ###
 ###################

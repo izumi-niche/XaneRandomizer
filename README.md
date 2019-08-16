@@ -22,6 +22,8 @@ All things need to be done to version v1.0
 - [x] Randomize Weapons (Note: It may be done, but I want to add more options to it)
 - [x] Break Weapons Locks
 - [x] Astral Shard Randomization
+- [x] 0% growths
+- [ ] Shop randomization
 
 - [ ] Add the options to the GUI
 - [ ] Complete the goddamn readme
@@ -68,7 +70,7 @@ Book 1 Tiki, the manakete bosses (Xemcel, Khorzas and Morzas) will always transf
 
 If you choose the option to remove the lock from the Rapier, every sword class can use it. But your in-battle animation will be just be Marth standing still and mentally damaging the enemy. Well, the rapier still works but the animation will be weird. The map animation will still work without problems.
 
-In vanilla FE3, Dancers can use the Rapier and the Falchion! But, Feena is hard-coded to not use to Falchion. So if you choose to break the Falchion's lock, sadly, Feena cannot use that weapon under any class. Everyone can use but the animation will be a bit weird.
+In vanilla FE3, the dancer class can use the Falchion, but Feena is hardcoded to not able to use it. So every dancer and lord can use the Rapier/Falchion, with the exception mentioned above.
 
 From the start of this randomizer i'm trying to get a way to enemy-only classes (Emperor, Ice Dragon etc) to work in all maps. Sadly, it is still not possible :( . All enemies and playable characters will randomized into classes that works in all maps (all playable classes, and Soldier). Sorry to say this, but Wyvern Gordin is still a dream.
 
@@ -130,6 +132,12 @@ Randomize classes for generic/boss units.
 
 Level will be increased by X for generic/boss units. Increasing the level will also increase their stats.
 
+#### Minimum weapon level
+
+All enemies/bosses will have a minimum weapon level. Tier 1 being based around iron, Tier 2 around steel, Tier 3 around silver and Tier 4 around legendary weapons like the Gradivus.
+
+In case of axes, the Devil Axe is considered a Tier 4 for enemies since they can't trigger the devil effect.
+
 #### Ignore thiefs with sphere/orbs
 
 Thiefs that carry a sphere or orb will not have their classes randomized. Good for preventing getting into a situation that the player can't catch them.
@@ -166,9 +174,29 @@ The growths are totally random and each growth is a random number varrying from 
 
 The growths will be randomized trying to be more 'balanced'. Not guarranted to be a totally balanced experience, since there is still a bit of 'random' on it.
 
+#### Break weapon locks
+
+Excalibur, Aura, Rescue, Thief, Aum (both books) will be usable by anyone. Also, they will be added to the pool of items used by enemies.
+
+If the randomized weapons option is enabled, this is not necessary. See below.
+
+#### Break Rapier lock
+
+Rapier will become usable by anyone and will be added to the pool used by enemies. This is a separate option from the above one since the Rapier can cause some funky animations, but it is still 100% usable without the game crashing.
+
+If the randomized weapons option is enabled, this is not necessary. See below.
+
 #### Randomized weapons
 
-Weapon stats will be randomized, with the exception of WpnLevel.
+Weapon stats will be randomized, with the exception of Weapon Level.
+
+Since the weapon locks are tied to the weapon uses and this will also be randomized, all weapon locks will be broken automatically.
+
+#### 0% growths
+
+All characters will be set to have 0% growths in everything, including weapon level.
+
+If the randomize growths option is enabled, this option will overwrite it.
 
 #### Randomize shops
 
@@ -185,7 +213,5 @@ Playable characters stats, items and class;
 Supports;
 
 Astral Shard bonuses;
-
-Weapon stats;
 
 Shop content.
