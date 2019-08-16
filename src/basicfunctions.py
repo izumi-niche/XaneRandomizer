@@ -2,7 +2,6 @@ import sys
 import random
 from data.chapters import *
 from data.portraits import *
-from data.dumbnames import *
 from data.characterdata import *
 from data.classes import *
 from data.items import *
