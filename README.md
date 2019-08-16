@@ -133,7 +133,7 @@ Randomize classes for generic/boss units.
 
 Level will be increased by X for generic/boss units. Increasing the level will also increase their stats.
 
-#### Minimum weapon level
+#### Randomize Items
 
 Generic/bosses will have a random chance of getting a droppable item.
 
