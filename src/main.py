@@ -199,11 +199,13 @@ def RandomizeEnemyUnits(thief):
 	for unit in UnitList:
 		if UnitList[unit]['portrait'] in EnemyList:
 			if not UnitList[unit]['class'] == 35:
-				if thief == 0:
-					UnitWrite.append(unit)
-				if thief == 1:
-					if not UnitList[unit]['item1'] in GetItems(ImportantItems):
-						UnitWrite.append(unit)
+				if not UnitList[unit]['weapon1'] == 59:
+					if not UnitList[unit]['weapon1'] == 58:
+						if thief == 0:
+							UnitWrite.append(unit)
+						if thief == 1:
+							if not UnitList[unit]['item1'] in GetItems(ImportantItems):
+								UnitWrite.append(unit)
 	# Write
 	for unit in UnitWrite:
 		RandomizeEnemyClasses(unit)

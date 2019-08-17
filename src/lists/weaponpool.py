@@ -240,8 +240,6 @@ MagicSilver = [
 MagicSilverEnemy = [
 	'Elfire',
 	'Thoron',
-	'Swarm',
-	'Meteor',
 	'Dulam'
 ]
 MagicLegendary = [
