@@ -29,6 +29,14 @@ def ReadHex(location):
 	fe3rom.seek(location)
 	HexRead = fe3rom.read(1)
 	return ByteToInt(HexRead)
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 ##############################################
 ############## Playable options ##############
 ##############################################
@@ -1037,7 +1045,7 @@ class BasicWindow:
 		self.label.grid(row = 0, column = 0)
 		self.button.grid(row = 1, column = 0)
 		self.window.title('Randomizing...')
-		self.window.iconbitmap('xane.ico')
+		self.window.iconbitmap(resource_path('xane.ico'))
 	def quit(self):
 		self.window.destroy()
 
@@ -1049,7 +1057,7 @@ class FinishWindow:
 		self.label.grid(row = 0, column = 0)
 		self.button.grid(row = 1, column = 0)
 		self.window.title('Finished!')
-		self.window.iconbitmap('xane.ico')
+		self.window.iconbitmap(resource_path('xane.ico'))
 	def quit(self):
 		self.window.destroy()
 		root.destroy()
@@ -1186,5 +1194,5 @@ buttonRandomize = Button(root, text='Randomize!', width = 50, command = Randomiz
 buttonRandomize.grid(row = 5, columnspan = 4, column = 0, sticky=N)
 
 root.title('Xane Randomizer: A FE3 Randomizer')
-root.iconbitmap('xane.ico')
+root.iconbitmap(resource_path('xane.ico'))
 root.mainloop()
