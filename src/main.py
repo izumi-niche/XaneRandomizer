@@ -319,6 +319,9 @@ def EnemyItem(mode, itemchance):
 			fe3rom.seek(unit + 12 + EnemyData[unit])
 			fe3rom.write(bytes([newitem]))
 
+def GiveLordExp():
+	fe3rom.seek(ClassBasesDec + 6)
+	fe3rom.write(bytes([32]))
 ###########################################
 ############## Other Options ##############
 ###########################################
@@ -1116,6 +1119,7 @@ def RandomizingProcess():
 		RandomizeSupports(LabelSupport.check('SupportMinCount'), LabelSupport.check('SupportMaxCount'), LabelSupport.check('SupportMinBonus'), LabelSupport.check('SupportMaxBonus'))
 # Generic unit randomization
 	if LabelGeneric.check('GenericClass') == 1:
+		GiveLordExp()
 		RandomizeEnemyUnits(LabelGeneric.check('ThiefShard'))
 # Increase enemy level
 	if LabelGeneric.check('GenericLevel') == 1:
@@ -1125,6 +1129,7 @@ def RandomizingProcess():
 		EnemyItem('enemy', LabelBoss.check('ItemChance'))
 # Boss unit randomization
 	if LabelBoss.check('BossClass') == 1:
+		GiveLordExp()
 		RandomizeBossUnits()
 # Boss level increase
 	if LabelBoss.check('BossLevel') == 1:
