@@ -4,29 +4,18 @@ Xane Randomizer is a randomizer for the game Fire Emblem: Mystery of the Emblem 
 For more information how to use it and other stuff, read more below.
 
 ## Checklist
-All things need to be done to version v1.0
-- [x] Randomize Playable Units
-- [x] Randomize Playable Bases
-- [x] Randomize Playable Growths
+Planned things for version 2.0.0!
 
-- [x] Randomize enemy units
-- [x] Randomize boss units
-- [x] Increase enemy level
-- [x] Increase boss level
-- [x] Increase bases and growths
-- [x] Chance to add a dropable item
-
-- [x] Support Randomization
-
-- [x] Randomize Weapons (Note: It may be done, but I want to add more options to it)
-- [x] Break Weapons Locks
-- [x] Astral Shard Randomization
-- [x] 0% growths
-- [x] Shop randomization
-
-- [x] Add the options to the GUI
-- [x] Complete the goddamn readme
-
+[ ] Randomized recruitment (Top priority)
+[ ] More options for weapon randomization
+[ ] Option to choose between 2 enemy-only classes
+[ ] Port the data from python script to XML files
+[ ] ^ also may require rewriting the whole thing
+[ ] Change the AI to allow siege weapon users to be randomized
+[ ] Code optimization
+[ ] Logic for exclusive weapons (Lady Sword, Nosferatu etc)
+[ ] Soldier promotion to General
+[ ] ?????
 ## Code
 This is my first project, which as expected, the code is a bit messy more than I care to admit. I may rewrite
 this thing in the extremely long future, but for now the main structure will stay like that. Well if you are not here for the source code, continue reading since everything after this is actual information!
