@@ -6,16 +6,16 @@ For more information how to use it and other stuff, read more below.
 ## Checklist
 Planned things for version 2.0.0!
 
-[ ] Randomized recruitment (Top priority)
-[ ] More options for weapon randomization
-[ ] Option to choose between 2 enemy-only classes
-[ ] Port the data from python script to XML files
-[ ] ^ also may require rewriting the whole thing
-[ ] Change the AI to allow siege weapon users to be randomized
-[ ] Code optimization
-[ ] Logic for exclusive weapons (Lady Sword, Nosferatu etc)
-[ ] Soldier promotion to General
-[ ] ?????
+- [ ] Randomized recruitment (Top priority)
+- [ ] More options for weapon randomization
+- [ ] Option to choose between 2 enemy-only classes
+- [ ] Port the data from python script to XML files
+- [ ] ^ also may require rewriting the whole thing
+- [ ] Change the AI to allow siege weapon users to be randomized
+- [ ] Code optimization
+- [ ] Logic for exclusive weapons (Lady Sword, Nosferatu etc)
+- [ ] Soldier promotion to General
+- [ ] ?????
 ## Code
 This is my first project, which as expected, the code is a bit messy more than I care to admit. I may rewrite
 this thing in the extremely long future, but for now the main structure will stay like that. Well if you are not here for the source code, continue reading since everything after this is actual information!
