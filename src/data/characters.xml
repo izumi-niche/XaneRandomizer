@@ -1,0 +1,741 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<data>
+  <character id="0">
+    <name>Marth</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="1">
+    <name>Caeda</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="2">
+    <name>Jagen</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="3">
+    <name>Cain</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="4">
+    <name>Abel</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="5">
+    <name>Draug</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="6">
+    <name>Gordin</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="7">
+    <name>Rickard</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="8">
+    <name>Wrys</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="9">
+    <name>Bord</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="10">
+    <name>Cord</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="11">
+    <name>Barst</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="12">
+    <name>Castor</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="13">
+    <name>Ogma</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="14">
+    <name>Darros</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="15">
+    <name>Julian</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="16">
+    <name>Lena</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="17">
+    <name>Merric</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="18">
+    <name>Navarre</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="19">
+    <name>Hardin</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="20">
+    <name>Wolf</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="21">
+    <name>Sedgar</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="22">
+    <name>Roshea</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="23">
+    <name>Vyland</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="24">
+    <name>Bantu</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="25">
+    <name>Caesar</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="26">
+    <name>Radd</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="27">
+    <name>Midia</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="28">
+    <name>Catria</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="29">
+    <name>Maria</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="30">
+    <name>Minerva</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="31">
+    <name>Linde</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="32">
+    <name>Jeorge</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="33">
+    <name>Dolph</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="34">
+    <name>Macellan</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="35">
+    <name>Tomas</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="36">
+    <name>Boah</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="37">
+    <name>Arran</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="38">
+    <name>Samson</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="39">
+    <name>Beck</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="40">
+    <name>Xane</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="41">
+    <name>Wendell</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="42">
+    <name>Est</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="43">
+    <name>Astram</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="44">
+    <name>Matthis</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="45">
+    <name>Roger</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="46">
+    <name>Jake</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="47">
+    <name>Palla</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="48">
+    <name>Tiki</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="49">
+    <name>Lorenz</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="50">
+    <name>Elice</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="51">
+    <name>Gotoh</name>
+    <playable/>
+    <book>1</book>
+  </character>
+  <character id="52">
+    <name>RickardE</name>
+    <playable/>
+    <book>2</book>
+    <child>Rickard2</child>
+  </character>
+  <character id="53">
+    <name>JeorgeE</name>
+    <playable/>
+    <book>1</book>
+    <child>Jeorge</child>
+  </character>
+  <character id="54">
+    <name>NavarreE</name>
+    <playable/>
+    <book>1</book>
+    <child>Navarre</child>
+  </character>
+  <character id="55">
+    <name>MatthisE</name>
+    <playable/>
+    <book>1</book>
+    <child>Matthis</child>
+  </character>
+  <character id="56">
+    <name>SheenaE</name>
+    <playable/>
+    <book>1</book>
+    <child>Sheena</child>
+  </character>
+  <character id="57">
+    <name>SamsonE</name>
+    <playable/>
+    <book>2</book>
+    <child>Samson2</child>
+  </character>
+  <character id="58">
+    <name>Unknown</name>
+  </character>
+  <character id="59">
+    <name>Unknown2</name>
+  </character>
+  <character id="60">
+    <name>MinervaE</name>
+    <playable/>
+    <book>1</book>
+    <child>Minerva</child>
+  </character>
+  <character id="61">
+    <name>Unknown3</name>
+  </character>
+  <character id="62">
+    <name>AstramE</name>
+    <playable/>
+    <book>2</book>
+    <child>Astram2</child>
+  </character>
+  <character id="63">
+    <name>PallaE</name>
+    <playable/>
+    <book>1</book>
+    <child>Palla</child>
+  </character>
+  <character id="64">
+    <name>Unknown4</name>
+  </character>
+  <character id="65">
+    <name>EstE</name>
+    <playable/>
+    <book>1</book>
+    <child>Est</child>
+  </character>
+  <character id="66">
+    <name>Unknown5</name>
+  </character>
+  <character id="67">
+    <name>Unknown6</name>
+  </character>
+  <character id="68">
+    <name>Unknown7</name>
+  </character>
+  <character id="69">
+    <name>Enemy</name>
+  </character>
+  <character id="70">
+    <name>Gharnef</name>
+  </character>
+  <character id="71">
+    <name>Boss1</name>
+  </character>
+  <character id="72">
+    <name>Boss2</name>
+  </character>
+  <character id="73">
+    <name>Michalis</name>
+  </character>
+  <character id="74">
+    <name>Boss3</name>
+  </character>
+  <character id="75">
+    <name>Enemy1</name>
+  </character>
+  <character id="76">
+    <name>Enemy2</name>
+  </character>
+  <character id="77">
+    <name>Enemy3</name>
+  </character>
+  <character id="78">
+    <name>Enemy4</name>
+  </character>
+  <character id="79">
+    <name>Enemy5</name>
+  </character>
+  <character id="80">
+    <name>Enemy6</name>
+  </character>
+  <character id="81">
+    <name>Enemy7</name>
+  </character>
+  <character id="82">
+    <name>Enemy8</name>
+  </character>
+  <character id="83">
+    <name>Enemy9</name>
+  </character>
+  <character id="84">
+    <name>Enemy10</name>
+  </character>
+  <character id="85">
+    <name>Enemy11</name>
+  </character>
+  <character id="86">
+    <name>Enemy12</name>
+  </character>
+  <character id="87">
+    <name>Enemy13</name>
+  </character>
+  <character id="88">
+    <name>Enemy14</name>
+  </character>
+  <character id="89">
+    <name>Enemy15</name>
+  </character>
+  <character id="90">
+    <name>Boss4</name>
+  </character>
+  <character id="91">
+    <name>Boss5</name>
+  </character>
+  <character id="92">
+    <name>Enemy16</name>
+  </character>
+  <character id="93">
+    <name>Enemy17</name>
+  </character>
+  <character id="94">
+    <name>Enemy18</name>
+  </character>
+  <character id="95">
+    <name>Enemy19</name>
+  </character>
+  <character id="96">
+    <name>Enemy20</name>
+  </character>
+  <character id="97">
+    <name>Enemy21</name>
+  </character>
+  <character id="98">
+    <name>Enemy22</name>
+  </character>
+  <character id="99">
+    <name>Enemy23</name>
+  </character>
+  <character id="100">
+    <name>Enemy24</name>
+  </character>
+  <character id="101">
+    <name>Enemy25</name>
+  </character>
+  <character id="102">
+    <name>Enemy26</name>
+  </character>
+  <character id="103">
+    <name>Enemy27</name>
+  </character>
+  <character id="104">
+    <name>Enemy28</name>
+  </character>
+  <character id="105">
+    <name>Enemy29</name>
+  </character>
+  <character id="106">
+    <name>Enemy30</name>
+  </character>
+  <character id="107">
+    <name>Camus</name>
+  </character>
+  <character id="108">
+    <name>Cecil</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="109">
+    <name>Luke</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="110">
+    <name>Roderick</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="111">
+    <name>Ryan</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="112">
+    <name>Warren</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="113">
+    <name>Enemy31</name>
+  </character>
+  <character id="114">
+    <name>Enemy32</name>
+  </character>
+  <character id="115">
+    <name>Yumina</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="116">
+    <name>Yubello</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="117">
+    <name>Sirius</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="118">
+    <name>Enemy33</name>
+  </character>
+  <character id="119">
+    <name>Marisha</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="120">
+    <name>Enemy34</name>
+  </character>
+  <character id="121">
+    <name>Samto</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="122">
+    <name>Enemy35</name>
+  </character>
+  <character id="123">
+    <name>Phina</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="124">
+    <name>Enemy36</name>
+  </character>
+  <character id="125">
+    <name>Enemy37</name>
+  </character>
+  <character id="126">
+    <name>Enemy38</name>
+  </character>
+  <character id="127">
+    <name>Enemy39</name>
+  </character>
+  <character id="128">
+    <name>Sheena</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="129">
+    <name>Marth2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="130">
+    <name>Arran2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="131">
+    <name>Gordin2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="132">
+    <name>Draug2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="133">
+    <name>Linde2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="134">
+    <name>Matthis2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="135">
+    <name>Julian2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="136">
+    <name>Catria2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="137">
+    <name>Ogma2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="138">
+    <name>Castor2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="139">
+    <name>Rickard2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="140">
+    <name>Jeorge2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="141">
+    <name>Wendell2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="142">
+    <name>Navarre2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="143">
+    <name>Astram2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="144">
+    <name>Caeda2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="145">
+    <name>Cain2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="146">
+    <name>Bantu2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="147">
+    <name>Unknown8</name>
+  </character>
+  <character id="148">
+    <name>Merric2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="149">
+    <name>Ellerean</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="150">
+    <name>Minerva2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="151">
+    <name>Xane2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="152">
+    <name>Tiki2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="153">
+    <name>Abel2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="154">
+    <name>Unknown9</name>
+  </character>
+  <character id="155">
+    <name>Samson2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="156">
+    <name>Enemy40</name>
+  </character>
+  <character id="157">
+    <name>Enemy41</name>
+  </character>
+  <character id="158">
+    <name>Roshea2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="159">
+    <name>Enemy42</name>
+  </character>
+  <character id="160">
+    <name>Midia2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="161">
+    <name>Enemy43</name>
+  </character>
+  <character id="162">
+    <name>Enemy44</name>
+  </character>
+  <character id="163">
+    <name>Enemy45</name>
+  </character>
+  <character id="164">
+    <name>Enemy46</name>
+  </character>
+  <character id="165">
+    <name>Enemy47</name>
+  </character>
+  <character id="166">
+    <name>Enemy48</name>
+  </character>
+  <character id="167">
+    <name>Nyna</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="168">
+    <name>Maria2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="169">
+    <name>Elice2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="170">
+    <name>Lena2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+  <character id="171">
+    <name>Palla2</name>
+    <playable/>
+    <book>2</book>
+  </character>
+</data>
