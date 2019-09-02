@@ -1,23 +1,27 @@
 import sys
 import random
-
-def ByteToInt(number):
-	return int.from_bytes(number, byteorder=sys.byteorder)
+from common import *
 
 class rom:
 	def __init__(self, location):
 		self.rom = open(location, 'rb+')
 		self.data = {}
 
-	def read(self, location, number=1):
+	def read(self, location, number=1, byte=False):
 		if number == 1:
 			self.rom.seek(location)
-			temp = ByteToInt(self.rom.read(1))
+			if byte:
+				temp = self.rom.read(1)
+			else:
+				temp = ByteToInt(self.rom.read(1))
 		else:
 			temp = []
 			for x in range(number):
 				self.rom.seek(location + x)
-				temp.append(ByteToInt(self.rom.read(1)))
+				if byte:
+					temp.append(self.rom.read(1))
+				else:
+					temp.append(ByteToInt(self.rom.read(1)))
 		return temp
 
 	def write(self, location, number):
@@ -50,6 +54,8 @@ class rom:
 		return numbers
 
 	def writetable(self, table, parameter, number, replace):
+		if not replace is bytes:
+			replace = bytes([replace])
 		self.write((self.data[table]['start'] +
 			(self.data[table]['size'] * number) +
 			self.data[table][parameter]), replace)
@@ -57,3 +63,8 @@ class rom:
 	def changelocation(self, table, number):
 		self.data[table]['start'] = number
 		return 'Changed ' + table + ' start position to ' + str(number)
+
+	def tablelocation(self, table, parameter, number):
+		return (self.data[table]['start'] +
+			(self.data[table]['size'] * number) +
+			self.data[table][parameter])

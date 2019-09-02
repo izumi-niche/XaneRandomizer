@@ -7,3 +7,6 @@ build/
 dist/
 *.bat
 dummy.py
+*.smc
+*.fig
+old.py

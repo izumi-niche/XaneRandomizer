@@ -1,30 +1,19 @@
 import xml.etree.ElementTree as ET
 import os
+from common import *
 
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
-
-def LoadXml(location):
-	parser = ET.XMLParser(encoding="utf-8")
-	tree = ET.parse(resource_path(location), parser=parser)
-	return tree.getroot()
 ############################
 ########## Main
 ############################
 def LoadData():
 	data = {}
-	data['name'] = data_names()
-	data['portrait'] = data_portraits()
-	data['class'] = data_class()
-	data['item'] = data_item()
-	data['character'] = data_characters()
-	data['unit'] = data_units()
-	data['tables'] = data_tables()
+	data['Name'] = data_names()
+	data['Portrait'] = data_portraits()
+	data['Class'] = data_class()
+	data['Item'] = data_item()
+	data['Character'] = data_characters()
+	data['Unit'] = data_units()
+	data['Tables'] = data_tables()
 	return data
 ############################
 ## Names
@@ -131,7 +120,6 @@ def data_tables():
 	data = {}
 	xml = LoadXml('data/table.xml')
 	for table in xml.findall('table'):
-		print(table.attrib['name'])
 		data[table.attrib['name']] = {}
 		shortcut = data[table.attrib['name']]
 		shortcut['start'] = int(table.find('start').text)
