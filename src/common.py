@@ -2,6 +2,9 @@ import xml.etree.ElementTree as ET
 import os
 import sys
 import io
+from PyQt5.QtWidgets import *
+
+showdebug = True
 
 def resource_path(relative_path):
     try:
@@ -18,3 +21,7 @@ def LoadXml(location):
 
 def ByteToInt(number):
 	return int.from_bytes(number, byteorder=sys.byteorder)
+
+def debug(message):
+	if showdebug:
+		print(message)

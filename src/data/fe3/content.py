@@ -19,7 +19,7 @@ def LoadData():
 ## Names
 def data_names():
 	data = {}
-	xml = LoadXml('data/names.xml')
+	xml = LoadXml('data/fe3/xml/names.xml')
 	for name in xml.findall('names'):
 		nameid = int(name.attrib['id'])
 		data[nameid] = {}
@@ -29,7 +29,7 @@ def data_names():
 ## Portraits
 def data_portraits():
 	data = {}
-	xml = LoadXml('data/portraits.xml')
+	xml = LoadXml('data/fe3/xml/portraits.xml')
 	for portrait in xml.findall('portrait'):
 		portraitid = int(portrait.attrib['id'])
 		data[portraitid] = {}
@@ -43,7 +43,7 @@ def data_portraits():
 #### Classes
 def data_class():
 	data = {}
-	xml = LoadXml('data/class.xml')
+	xml = LoadXml('data/fe3/xml/class.xml')
 	for job in xml.findall('class'):
 		jobid = int(job.attrib['id'])
 		data[jobid] = {}
@@ -59,7 +59,7 @@ def data_class():
 #### Items
 def data_item():
 	data = {}
-	xml = LoadXml('data/items.xml')
+	xml = LoadXml('data/fe3/xml/items.xml')
 	for item in xml.findall('item'):
 		itemid = int(item.attrib['id'])
 		data[itemid] = {}
@@ -84,7 +84,7 @@ def data_item():
 #### Characters
 def data_characters():
 	data = {}
-	xml = LoadXml('data/characters.xml')
+	xml = LoadXml('data/fe3/xml/characters.xml')
 	for character in xml.findall('character'):
 		data[int(character.attrib['id'])] = {}
 		shortcut = data[int(character.attrib['id'])]
@@ -100,7 +100,7 @@ def data_characters():
 ##### Chapters
 def data_units():
 	data = {}
-	xml = LoadXml('data/unitlocation.xml')
+	xml = LoadXml('data/fe3/xml/unitlocation.xml')
 	for unit in xml.findall('unit'):
 		data[int(unit.attrib['id'])] = {}
 		shortcut = data[int(unit.attrib['id'])]
@@ -118,7 +118,7 @@ def data_units():
 ##### Tables
 def data_tables():
 	data = {}
-	xml = LoadXml('data/table.xml')
+	xml = LoadXml('data/fe3/xml/table.xml')
 	for table in xml.findall('table'):
 		data[table.attrib['name']] = {}
 		shortcut = data[table.attrib['name']]
