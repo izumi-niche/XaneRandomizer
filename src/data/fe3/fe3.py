@@ -14,6 +14,11 @@ config = {}
 def load_rom(location):
 	debug('Rom location set to: ', location)
 	config['rom'] = location
+
+def load_config(stuff):
+	debug('Loading FE3 config...')
+	for x in stuff:
+		config[x] = stuff[x]
 ##################################
 # Load everything important, and set up the tables.
 ##################################
@@ -32,6 +37,9 @@ def loadeverything():
 # 1. Give the Lord class a exp of 32.
 # 2. Remove the transformation event for B1!Tiki/Morzas/Xemcel/Khozel.
 ##################################
+def obligatory():
+	# Lord exp
+	fe3rom.writetable('ClassBase', 'Experience', 0)
 ##################################
 # Find units.
 # globaldata must be set up fist.
@@ -82,7 +90,12 @@ def searchunits():
 				y += 1
 
 	return data
-
+########################
+# Give items
+# Give a item to the specfied location.
+########################
+def give_item(location):
+	fe3rom.changelocation('Unit', location)
 ######################################################
 ###################### Playable ######################
 ######################################################
@@ -92,11 +105,14 @@ def searchunits():
 ##################################
 def playable_bases(base):
 	debug('Randomizing bases...')
+
+	find = ['GrowthStrength', 'GrowthSkill', 'GrowthSpeed', 'GrowthLuck', 'GrowthDefense',
+			'GrowthResistance', 'GrowthHP', 'GrowthWpnLvl']
+
 	for x in globaldata['Character']:
 		if 'playable' in globaldata['Character'][x]['tags']:
-			debug('Randomizing bases of character ', x)
-			for stat in ['BaseStrength', 'BaseSkill', 'BaseSpeed', 'BaseLuck', 'BaseDefense', 'BaseResistance',
-			'BaseHP', 'BaseWpnLvl']:
+			debug('Randomizing bases of character', x)
+			for stat in find:
 				oldstat = fe3rom.readtable('Character', stat, x)
 				oldstat += random.randint(base * -1, base)
 				if oldstat < 0:
@@ -109,28 +125,36 @@ def playable_bases(base):
 # Full = Random number between 5 and 100.
 ##################################
 def playable_growth(growth, mode):
+	debug('Randomizing growths...')
 	find = ['GrowthStrength', 'GrowthSkill', 'GrowthSpeed', 'GrowthLuck', 'GrowthDefense',
 			'GrowthResistance', 'GrowthHP', 'GrowthWpnLvl']
 	# Range
 	if mode == 1:
+		debug('Growth mode: Range')
 		for x in globaldata['Character']:
 			if 'playable' in globaldata['Character'][x]['tags']:
+				debug('Randomizing growths for character', x)
+
 				for stat in find:
 					oldstat = fe3rom.readtable('Character', stat, x)
 					oldstat += random.randint(growth * -1, growth)
 					if oldstat < 0:
 						oldstat = 0
 					fe3rom.writetable('Character', stat, x, oldstat)
+	# Full
 	elif mode == 2:
+		debug('Growth mode: Full')
 		for x in globaldata['Character']:
 			if 'playable' in globaldata['Character'][x]['tags']:
+				debug('Randomizing growths for character', x)
+
 				for stat in find:
 					oldstat = fe3rom.readtable('Character', stat, x)
 					oldstat = random.randint(5, 100)
 					fe3rom.writetable('Character', stat, x, oldstat)
 ##################################
-if __name__ == "__main__":
-	config['rom'] = 'Fire Emblem - Monshou no Nazo (J) (V1.1).smc'
-	config['baserange'] = 3
-	loadeverything()
-	print(searchunits())
+config['rom'] = 'Fire Emblem - Monshou no Nazo (J) (V1.1).smc'
+config['baserange'] = 3
+loadeverything()
+playable_bases(1)
+playable_growth(10, 2)

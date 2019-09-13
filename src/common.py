@@ -22,6 +22,6 @@ def LoadXml(location):
 def ByteToInt(number):
 	return int.from_bytes(number, byteorder=sys.byteorder)
 
-def debug(message):
+def debug(message, *args):
 	if showdebug:
-		print(message)
+		print(message, *args)

@@ -79,6 +79,10 @@ def data_item():
 			except:
 				'hi'
 
+		for x in ['dragonstone', 'shop']:
+			if not item.find(x) == None:
+				data[itemid]['tags'].append(x)
+
 	return data
 #############################
 #### Characters
