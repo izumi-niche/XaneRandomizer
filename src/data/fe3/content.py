@@ -106,8 +106,8 @@ def data_units():
 	data = {}
 	xml = LoadXml('data/fe3/xml/unitlocation.xml')
 	for unit in xml.findall('unit'):
-		data[int(unit.attrib['id'])] = {}
-		shortcut = data[int(unit.attrib['id'])]
+		data[unit.attrib['id']] = {}
+		shortcut = data[unit.attrib['id']]
 		if unit.find('type').text == 'table':
 			shortcut['type'] = 'table'
 			shortcut['start'] = int(unit.find('start').text)

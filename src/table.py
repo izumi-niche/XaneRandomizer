@@ -2,10 +2,12 @@ import sys
 import random
 from common import *
 
-class rom:
-	def __init__(self, location):
+class sfcrom:
+	def __init__(self, location, header=True, romtype='LoROM'):
 		self.rom = open(location, 'rb+')
 		self.data = {}
+		self.header = header
+		self.romtype = romtype
 
 	def read(self, location, number=1, byte=False):
 		if number == 1:
@@ -68,3 +70,23 @@ class rom:
 		return (self.data[table]['start'] +
 			(self.data[table]['size'] * number) +
 			self.data[table][parameter])
+
+	def getpointer(self, pointer, position, swap=True):
+		BankSize = 32768
+		if self.romtype == 'LoROM':
+			pointer = bytearray(pointer)
+			bank = int(position / BankSize)
+			bank = bank * BankSize
+
+			if len(pointer) == 2:
+				if swap:
+					pointer[0], pointer[1] = pointer[1], pointer[0]
+
+				pointer = bytes(pointer)
+				pointer = int.from_bytes(pointer, byteorder='big')
+				pointer -= BankSize
+
+				if self.header:
+					pointer += 512
+					
+				return pointer + bank

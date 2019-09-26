@@ -2,9 +2,8 @@ import xml.etree.ElementTree as ET
 import os
 import sys
 import io
+import config
 from PyQt5.QtWidgets import *
-
-showdebug = True
 
 def resource_path(relative_path):
     try:
@@ -23,5 +22,5 @@ def ByteToInt(number):
 	return int.from_bytes(number, byteorder=sys.byteorder)
 
 def debug(message, *args):
-	if showdebug:
+	if config.showdebug:
 		print(message, *args)

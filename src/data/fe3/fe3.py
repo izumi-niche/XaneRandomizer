@@ -28,7 +28,7 @@ def loadeverything():
 	debug('Loading globaldata...')
 	globaldata = LoadData()
 	debug('Loading ROM...')
-	fe3rom = rom(config['rom'])
+	fe3rom = sfcrom(config['rom'])
 	debug('Loading tables...')
 	for x in globaldata['Tables']:
 		fe3rom.createtable(x, globaldata['Tables'][x])
@@ -45,51 +45,12 @@ def obligatory():
 # globaldata must be set up fist.
 ##################################
 def searchunits():
-	debug('Searching for units...')
-	data = {}
-	for x in globaldata['Unit']:
-		unit = globaldata['Unit'][x]
-		if unit['type'] == 'table':
-			start = unit['start']
-			end = unit['endpoint']
-			while True:
-				if fe3rom.read(start) == 255:
-					if start >= end:
-						break
-					else:
-						start += 1
-						continue
-				y = 0
-				while True:
-					fe3rom.changelocation('Unit', start)
-					character = fe3rom.readtable('Unit', 'Character', y)
-					if not character == 255:
-						name = fe3rom.tablelocation('Unit', 'Character', y)
-						data[name] = {}
-						for stat in ['Character', 'Class', 'Level', 'Name', 'X', 'Y', 'Portrait', 
-						'Weapon1', 'Weapon2', 'Weapon3', 'Weapon4', 'Item1', 'Item2', 'Ai1', 'Ai2', 'Ai3']:
-							data[name][stat] = fe3rom.readtable('Unit', stat, y)
-						data[name]['Reinforcement'] = False
-						y += 1
-					else:
-						start = start + (y * 19)
-						y = 0
-						break
-		if unit['type'] == 'reinforcement':
-			start = unit['start']
-			y = 0
-			while True:
-				if fe3rom.readtable('Unit','Character', y) == 255:
-					break
-				name = fe3rom.tablelocation('Unit', 'Character', y)
-				data[name] = {}
-				for stat in ['Character', 'Class', 'Level', 'Name', 'X', 'Y', 'Portrait', 
-				'Weapon1', 'Weapon2', 'Weapon3', 'Weapon4', 'Item1', 'Item2', 'Ai1', 'Ai2', 'Ai3']:
-					data[name][stat] = fe3rom.readtable('Unit', stat, y)
-				data[name]['Reinforcement'] = True
-				y += 1
+	location = 295424
+	size = 47
+	for s in range(size):
+		fe3rom.rom.seek(location + (2 * s))
+		print( fe3rom.getpointer(fe3rom.rom.read(2), location + (2 * s) ))
 
-	return data
 ########################
 # Give items
 # Give a item to the specfied location.
@@ -156,5 +117,4 @@ def playable_growth(growth, mode):
 config['rom'] = 'Fire Emblem - Monshou no Nazo (J) (V1.1).smc'
 config['baserange'] = 3
 loadeverything()
-playable_bases(1)
-playable_growth(10, 2)
+newsearchunits()
