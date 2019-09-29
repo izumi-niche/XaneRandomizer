@@ -1,18 +1,16 @@
 <data>
 	<unit id='hidden'>
-		<type>table</type>
-		<start>262752</start>
-		<size>47</size>
-		<endpoint>266267</endpoint>
+		<type>pointer</type>
+		<start>262656</start>
+		<size>48</size>
 	</unit>
 	<unit id='start'>
-		<type>table</type>
-		<start>295550</start>
-		<size>63</size>
-		<endpoint>312922</endpoint>
+		<type>pointer</type>
+		<start>295424</start>
+		<size>48</size>
 	</unit>
 	<unit id='reinforcement'>
-		<type>reinforcement</type>
+		<type>table</type>
 		<start>270189</start>
 	</unit>
 </data>

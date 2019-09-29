@@ -45,11 +45,52 @@ def obligatory():
 # globaldata must be set up fist.
 ##################################
 def searchunits():
-	location = 295424
-	size = 47
-	for s in range(size):
-		fe3rom.rom.seek(location + (2 * s))
-		print( fe3rom.getpointer(fe3rom.rom.read(2), location + (2 * s) ))
+	data = {}
+	for x in globaldata['Unit']:
+		units = globaldata['Unit'][x]
+		start = units['start']
+		if units['type'] == 'pointer':
+			for size in range(units['size']):
+				position = start + (2 * size)
+				fe3rom.rom.seek(position)
+				location = fe3rom.getpointer(fe3rom.rom.read(2), position)
+				fe3rom.changelocation('Unit', location)
+				y = 0
+				while True:
+					if not fe3rom.readtable('Unit', 'Character', y) == 255:
+						data[fe3rom.tablelocation('Unit', 'Character', y)] = {}
+						unit = data[fe3rom.tablelocation('Unit', 'Character', y)]
+						for z in globaldata['Tables']['Unit']:
+							if z == 'start' or z == 'size':
+								continue
+							unit[z] = fe3rom.readtable('Unit', z, y)
+
+						unit['type'] = x
+						unit['chapter'] = size
+						y += 1
+					else:
+						break
+
+		elif units['type'] == 'table':
+			start = units['start']
+			fe3rom.changelocation('Unit', int(start))
+			y = 0
+			while True:
+				if not fe3rom.readtable('Unit', 'Character', y) == 255:
+					data[fe3rom.tablelocation('Unit', 'Character', y)] = {}
+					unit = data[fe3rom.tablelocation('Unit', 'Character', y)]
+					for z in globaldata['Tables']['Unit']:
+						if z == 'start' or z == 'size':
+							continue
+						unit[z] = fe3rom.readtable('Unit', z, y)
+
+					unit['type'] = x
+					y += 1
+				else:
+					break
+
+	print(data)
+	return
 
 ########################
 # Give items
@@ -117,4 +158,4 @@ def playable_growth(growth, mode):
 config['rom'] = 'Fire Emblem - Monshou no Nazo (J) (V1.1).smc'
 config['baserange'] = 3
 loadeverything()
-newsearchunits()
+searchunits()

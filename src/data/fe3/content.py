@@ -14,6 +14,7 @@ def LoadData():
 	data['Character'] = data_characters()
 	data['Unit'] = data_units()
 	data['Tables'] = data_tables()
+	data['Chapters'] = data_chapters()
 	return data
 ############################
 ## Names
@@ -108,13 +109,12 @@ def data_units():
 	for unit in xml.findall('unit'):
 		data[unit.attrib['id']] = {}
 		shortcut = data[unit.attrib['id']]
-		if unit.find('type').text == 'table':
-			shortcut['type'] = 'table'
+		if unit.find('type').text == 'pointer':
+			shortcut['type'] = 'pointer'
 			shortcut['start'] = int(unit.find('start').text)
 			shortcut['size'] = int(unit.find('size').text)
-			shortcut['endpoint'] = int(unit.find('endpoint').text)
 		else:
-			shortcut['type'] = 'reinforcement'
+			shortcut['type'] = 'table'
 			shortcut['start'] = unit.find('start').text
 
 	return data
@@ -130,5 +130,17 @@ def data_tables():
 		shortcut['size'] = int(table.find('size').text)
 		for x in table.findall('data'):
 			shortcut[x.attrib['name']] = int(x.attrib['id'])
+
+	return data
+
+############################
+##### Chapters
+def data_chapters():
+	data = {}
+	xml = LoadXml('data/fe3/xml/chapters.xml')
+	for chapter in xml.findall('chapter'):
+		data[chapter.attrib['id']] = {}
+		shortcut = data[chapter.attrib['id']]
+		shortcut['name'] = chapter.find('name').text
 
 	return data
