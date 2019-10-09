@@ -42,5 +42,3 @@ def patch(filelocation, patchlocation):
 	for x in data:
 		file.seek(x[0])
 		file.write(x[2])
-
-patch('Fire Emblem - Monshou no Nazo (J) (V1.1).smc', 'FE3 Fixed growths.ips')
