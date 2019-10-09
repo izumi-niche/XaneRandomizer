@@ -45,7 +45,7 @@ class sfcrom:
 		for x in newdata:
 			self.data[name][x] = newdata[x]
 	
-	def readtable(self, table, parameter, number, lenght=1):
+	def readtable(self, table, parameter, number=1, lenght=1):
 		numbers = []
 		for x in range(lenght):
 			return self.read((self.data[table]['start'] +

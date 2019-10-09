@@ -3,7 +3,6 @@ import os
 import sys
 import io
 import config
-from PyQt5.QtWidgets import *
 
 def resource_path(relative_path):
     try:

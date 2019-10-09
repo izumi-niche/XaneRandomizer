@@ -2,6 +2,7 @@ from data.fe3.content import *
 from table import *
 from common import *
 import random
+import data.fe3.log as log
 ##################################
 # Set up global variables for data and rom.
 ##################################
@@ -89,8 +90,8 @@ def searchunits():
 				else:
 					break
 
-	print(data)
-	return
+
+	return data
 
 ########################
 # Give items
@@ -124,9 +125,9 @@ def playable_bases(base):
 # Randomize growths
 # Two modes:
 # Range = Random number between -x and x, then add to the growth.
-# Full = Random number between 5 and 100.
+# Full = Random number between X and X.
 ##################################
-def playable_growth(growth, mode):
+def playable_growth(range_growth, min_full, max_full mode):
 	debug('Randomizing growths...')
 	find = ['GrowthStrength', 'GrowthSkill', 'GrowthSpeed', 'GrowthLuck', 'GrowthDefense',
 			'GrowthResistance', 'GrowthHP', 'GrowthWpnLvl']
@@ -139,7 +140,7 @@ def playable_growth(growth, mode):
 
 				for stat in find:
 					oldstat = fe3rom.readtable('Character', stat, x)
-					oldstat += random.randint(growth * -1, growth)
+					oldstat += random.randint(range_growth * -1, range_growth)
 					if oldstat < 0:
 						oldstat = 0
 					fe3rom.writetable('Character', stat, x, oldstat)
@@ -152,10 +153,15 @@ def playable_growth(growth, mode):
 
 				for stat in find:
 					oldstat = fe3rom.readtable('Character', stat, x)
-					oldstat = random.randint(5, 100)
+					oldstat = random.randint(min_full, max_full)
 					fe3rom.writetable('Character', stat, x, oldstat)
+	# Redistribution
+	elif mode == 3:
+		debug('Growth mode: Redistribution')
 ##################################
 config['rom'] = 'Fire Emblem - Monshou no Nazo (J) (V1.1).smc'
 config['baserange'] = 3
+config['log'] = 'dummy.xml'
 loadeverything()
-searchunits()
+log.startlog(config['log'], searchunits(), fe3rom)
+log.enemyunits()
