@@ -324,7 +324,10 @@
     <child>Palla</child>
   </character>
   <character id="64">
-    <name>Unknown4</name>
+    <name>CatriaE</name>
+    <playable/>
+    <book>1</book>
+    <child>Catria</child>
   </character>
   <character id="65">
     <name>EstE</name>

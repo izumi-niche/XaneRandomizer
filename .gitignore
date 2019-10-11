@@ -10,3 +10,5 @@ dummy.py
 *.smc
 *.fig
 old.py
+*.html
+filename.xml

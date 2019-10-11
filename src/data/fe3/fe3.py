@@ -96,9 +96,51 @@ def searchunits():
 ########################
 # Give items
 # Give a item to the specfied location.
+# 1. Get unit items
+# 2. Get weapon wpnlvl/tier
+# 3. Get weapon tier
+# 3. Get character wpnlvl and class
+# 4. See if the class can use any class locked weapons in the tier
+# 4a. See if the class can use Mage/Staff or Lance/Sword, then split the weapon distribution
+# 5. Search for a weapon that the character can use with their wpnlvl
+# 6a. If not found, try using a lower tier.
+# 7. If it is a player, move staves and dragonstones to the item slot.
+# 8. If character class is a Cavalier/Paladin/Wyvern/Pegasus and is not gave a sword, give it a iron sword.
 ########################
-def give_item(location):
+def give_item(location, chapter, playable=True):
+	# set table location to the unit
 	fe3rom.changelocation('Unit', location)
+
+	# get items/weapons
+	unit_items = []
+	for x in ['Weapon1', 'Weapon2', 'Weapon3', 'Weapon4', 'Item1', 'Item2']:
+		temp = fe3rom.readtable('Unit', x)
+		print(temp)
+		if temp == 255:
+			continue
+		unit_items.append([temp])
+
+	# get item wpnlvl and tier
+	# if unit is playable get wpnlvl and tier normally
+	itemlist = globaldata['Item']
+	for x in unit_items:
+		item = x[0]
+		# check if it is a weapon first
+		# if not, skip
+		if not 'weapon' in itemlist[item]:
+			x.append('Item')
+			continue
+		
+		if playable:
+			x.append(fe3rom.readtable('Item', ))
+
+	# get unit wpnlvl and class
+	# if it is enemy, set wpnlvl to 255
+	if playable:
+		unit_wpnlvl = fe3rom.readtable('Character', 'BaseWpnLvl', fe3rom.readtable('Unit', 'Character'))
+	else:
+		unit_wpnlvl = 255
+	unit_class = fe3rom.readtable('Unit', 'Class')
 ######################################################
 ###################### Playable ######################
 ######################################################
@@ -127,7 +169,7 @@ def playable_bases(base):
 # Range = Random number between -x and x, then add to the growth.
 # Full = Random number between X and X.
 ##################################
-def playable_growth(range_growth, min_full, max_full mode):
+def playable_growth(range_growth, min_full, max_full, mode):
 	debug('Randomizing growths...')
 	find = ['GrowthStrength', 'GrowthSkill', 'GrowthSpeed', 'GrowthLuck', 'GrowthDefense',
 			'GrowthResistance', 'GrowthHP', 'GrowthWpnLvl']
@@ -159,9 +201,10 @@ def playable_growth(range_growth, min_full, max_full mode):
 	elif mode == 3:
 		debug('Growth mode: Redistribution')
 ##################################
-config['rom'] = 'Fire Emblem - Monshou no Nazo (J) (V1.1).smc'
+config['rom'] = 'Fire_Emblem_-_Monshou_no_Nazo_J_V1.1.smc'
 config['baserange'] = 3
 config['log'] = 'dummy.xml'
 loadeverything()
-log.startlog(config['log'], searchunits(), fe3rom)
+log.startlog('dummy.xml', searchunits(), fe3rom, globaldata)
 log.enemyunits()
+log.writelog()

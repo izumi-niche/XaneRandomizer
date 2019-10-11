@@ -109,4 +109,20 @@
 		<start>2877952</start>
 		<size>32</size>
 	</table>
+	<table name='Item'>
+		<start>272617</start>
+		<size>14</size>
+		<data name='Type' id='0'/>
+		<data name='Icon' id='1'/>
+		<data name='WpnLvl' id='2'/>
+		<data name='Might' id='3'/>
+		<data name='Hit' id='4'/>
+		<data name='Critical' id='5'/>
+		<data name='Weight' id='6'/>
+		<data name='Uses' id='8'/>
+		<data name='Cost' id='9'/>
+		<data name='Range' id='11'/>
+		<data name='ItemNo1' id='12'/>
+		<data name='ItemNo2' id='13'/>
+	</table>
 </data>
