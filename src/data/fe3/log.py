@@ -23,26 +23,11 @@ units = False
 index = False
 fe3rom = False
 globaldata = False
-class createindex:
-	def __init__(self):
-		self.index = ET.SubElement(body, 'index')
 
-	def addtable(self, tablename, contents):
-		self.newtable = ET.SubElement(self.index, tablename.replace(' ', '_'))
-		ET.SubElement(self.newtable, 'h2').text = tablename
-		self.tr = ET.SubElement(self.newtable, 'tr')
-		for x in contents:
-			self.th = ET.SubElement(self.tr, 'th')
-			ET.SubElement(self.th, 'a', href='#' + x.replace(' ', '_')).text = x
-
+# Start the log
 def startlog(location, search, rom, data):
-	global html
-	global units
-	global index
-	global fe3rom
-	global globaldata
-	global body
-	global head
+	global html, units, index, fe3rom, globaldata, body, head
+
 	globaldata = data
 	fe3rom = rom
 	html = ET.Element('html')
@@ -197,4 +182,4 @@ def enemyunits():
 
 def writelog():
 	tree = ET.ElementTree(html)
-	tree.write("filename.html")
+	tree.write(location)

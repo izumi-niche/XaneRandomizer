@@ -169,7 +169,14 @@ def playable_bases(base):
 # Range = Random number between -x and x, then add to the growth.
 # Full = Random number between X and X.
 ##################################
-def playable_growth(range_growth, min_full, max_full, mode):
+# Adjust growth to a multiplier of 5
+##################################
+def growth_adjust(number):
+	number = int(number / 5)
+	number = number * 5
+	return number
+
+def playable_growth(range_growth=30, min_full=5, max_full=100, hp_dis=True, mode=1, adjust=True):
 	debug('Randomizing growths...')
 	find = ['GrowthStrength', 'GrowthSkill', 'GrowthSpeed', 'GrowthLuck', 'GrowthDefense',
 			'GrowthResistance', 'GrowthHP', 'GrowthWpnLvl']
@@ -185,6 +192,7 @@ def playable_growth(range_growth, min_full, max_full, mode):
 					oldstat += random.randint(range_growth * -1, range_growth)
 					if oldstat < 0:
 						oldstat = 0
+
 					fe3rom.writetable('Character', stat, x, oldstat)
 	# Full
 	elif mode == 2:
@@ -200,11 +208,36 @@ def playable_growth(range_growth, min_full, max_full, mode):
 	# Redistribution
 	elif mode == 3:
 		debug('Growth mode: Redistribution')
+		# for each character
+		for x in globaldata['Character']:
+			if 'playable' in globaldata['Character'][x]['tags']:
+				debug('Distributing growths for character', x)
+
+				growthtotal = 0
+				# get stats total
+				for stat in find:
+					growthtotal += fe3rom.readtable('Character', stat, x)
+
+				# maximum growth per stat = (growthtotal / 8) + 15
+				maximumgrowth = int(growthtotal / 8) + 15
+
+				# get random number between maximumgrowth and 3
+				growthlist = []
+				for x in range(8):
+					newgrowth = random.randint(3, maximumgrowth)
+					newgrowth = growthtotal if newgrowth > growthtotal else newgrowth
+					growthtotal -= newgrowth
+					if adjust:
+						newgrowth = growth_adjust(newgrowth)
+					growthlist.append(newgrowth)
+
+				print(growthlist)
 ##################################
 config['rom'] = 'Fire_Emblem_-_Monshou_no_Nazo_J_V1.1.smc'
 config['baserange'] = 3
 config['log'] = 'dummy.xml'
 loadeverything()
-log.startlog('dummy.xml', searchunits(), fe3rom, globaldata)
-log.enemyunits()
-log.writelog()
+#log.startlog('dummy.xml', searchunits(), fe3rom, globaldata)
+#log.enemyunits()
+#log.writelog()
+playable_growth(mode=3)

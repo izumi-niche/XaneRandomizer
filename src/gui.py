@@ -2,8 +2,9 @@ from tkinter import *
 from tkinter import filedialog
 
 class CreateLabel:
-	def __init__(self, text, row, column, columnspan=1, rowspan=1, sticky=NW):
-		self.label = LabelFrame(root, text= text)
+	def __init__(self, text, row, column, columnspan=1, rowspan=1, sticky=NW, root = None):
+		self.root = root
+		self.label = LabelFrame(self.root, text= text)
 		self.label.grid(row = row, column = column, stick = sticky, columnspan = columnspan, rowspan = rowspan)
 		self.VarList = {}
 		self.maxcolumn = 0
