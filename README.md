@@ -1,3 +1,6 @@
+# Note
+This was my first project ever, meaning the code for this EXTREMELY bad. It is also unfinished, if you want the code for the latest version, download it from releases. If you want to make a new FE3 randomizer it's better to make a new one from scratch.
+
 # Xane Randomizer
 Xane Randomizer is a randomizer for the game Fire Emblem: Mystery of the Emblem for the SNES, also know as FE3.
 
